@@ -11,3 +11,5 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/auth/**
+          filters:
+            - JwtFilter
