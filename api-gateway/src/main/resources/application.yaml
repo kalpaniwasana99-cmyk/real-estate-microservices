@@ -11,5 +11,24 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/auth/**
-          filters:
-            - JwtFilter
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+# Spring Security මඟින් 401 ඒම වැළැක්වීම සඳහා මෙය එකතු කරන්න
+management:
+  endpoints:
+    web:
+    exposure:
+      include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+# Spring Security ඩීෆෝල්ට් පාස්වර්ඩ් එක ඉවත් කිරීම සඳහා
+spring.security.oauth2:
+  resourceserver:
+    jwt:
+      issuer-uri: ~

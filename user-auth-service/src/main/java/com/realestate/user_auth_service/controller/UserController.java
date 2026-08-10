@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,5 +44,37 @@ public class UserController {
         } else {
             return ResponseEntity.status(401).body("ඊමේල් ලිපිනය හෝ මුරපදය වැරදියි!");
         }
+    }
+
+    // --- CRUD Endpoints (Assignment අවශ්‍යතාවය සඳහා) ---
+
+    // 1. සියලුම Users ලැයිස්තුව ලබාගැනීම (GET)
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    // 2. ID එක මඟින් User කෙනෙකු ලබාගැනීම (GET)
+    @GetMapping("/users/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable String id) {
+        User user = userService.getUserById(id);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(404).body("පරිශීලකයා හමු නොවීය!");
+        }
+    }
+
+    // 3. User කෙනෙකුගේ තොරතුරු යාවත්කාලීන කිරීම (PUT)
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User userDetails) {
+        return ResponseEntity.ok(userService.updateUser(id, userDetails));
+    }
+
+    // 4. User කෙනෙකු ඉවත් කිරීම (DELETE)
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<String> updateUser(@PathVariable String id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok("පරිශීලකයා සාර්ථකව ඉවත් කරන ලදී.");
     }
 }
