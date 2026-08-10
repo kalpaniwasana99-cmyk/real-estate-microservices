@@ -13,19 +13,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // පරිශීලකයෙකු ලියාපදිංචි කිරීම (Register)
     public User registerUser(User user) {
         return userRepository.save(user);
     }
 
-    // පද්ධතියට ඇතුළුවීම තහවුරු කිරීම (Login authentication)
-    public boolean authenticate(String email, String password) {
+    public User loginUser(String email, String password) {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            // සරල මුරපද පරීක්ෂාව
-            return user.getPassword().equals(password);
+            if (user.getPassword().equals(password)) {
+                return user;
+            }
         }
-        return false;
+        return null;
     }
 }
