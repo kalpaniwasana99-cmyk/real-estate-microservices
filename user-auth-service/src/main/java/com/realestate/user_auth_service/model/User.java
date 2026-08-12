@@ -7,7 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
-    private String username;
+    
+    // username වෙනුවට Frontend එකට ගැළපෙන පරිදි firstName සහ lastName එකතු කළා
+    private String firstName;
+    private String lastName;
+    
     private String email;
     private String password;
     private String role;
@@ -17,9 +21,10 @@ public class User {
     }
 
     // සියලු විස්තර සහිත Constructor එක
-    public User(String id, String username, String email, String password, String role) {
+    public User(String id, String firstName, String lastName, String email, String password, String role) {
         this.id = id;
-        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -34,12 +39,20 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

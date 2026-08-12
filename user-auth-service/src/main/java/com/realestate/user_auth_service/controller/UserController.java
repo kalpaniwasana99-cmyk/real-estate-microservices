@@ -71,9 +71,9 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(id, userDetails));
     }
 
-    // 4. User කෙනෙකු ඉවත් කිරීම (DELETE)
+    // 4. User කෙනෙකු ඉවත් කිරීම (DELETE) - මෙන්න නම නිවැරදි කළා
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable String id) {
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
         return ResponseEntity.ok("පරිශීලකයා සාර්ථකව ඉවත් කරන ලදී.");
     }

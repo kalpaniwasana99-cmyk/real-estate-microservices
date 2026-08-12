@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Portal - Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Sign in page එකේ වගේම හරියටම එකම පසුබිම */
+        body {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Sign in page එකේ තියෙන Mobile Phone ප්‍රමාණයේ සහ හැඩයේ බොක්ස් එකමයි */
+        .mobile-screen {
+            background-color: #ffffff;
+            width: 375px; 
+            height: 700px; 
+            border-radius: 40px; 
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #f1f1f1; 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ඉහළින් ඇති Real Estate පින්තූරය (Sign in එකේ වගේමයි) */
+        .header-image {
+            background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80') center/cover no-repeat;
+            height: 28%; /* ෆෝම් එකේ දිග වැඩි නිසා මෙතන උස ටිකක් ගැලපෙන විදිහට හැදුවා */
+            position: relative;
+        }
+
+        .header-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+        }
+
+        .app-logo {
+            position: absolute;
+            bottom: 15px;
+            left: 25px;
+            color: #ffffff;
+            z-index: 2;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* රෙජිස්ටර් ෆෝම් කොටස */
+        .register-content {
+            padding: 25px 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .register-content h2 {
+            color: #1a1a1a;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .register-content p {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #444;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #e1e5ee;
+            border-radius: 12px;
+            font-size: 13px;
+            outline: none;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #2b5cff;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 92, 255, 0.1);
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 13px;
+            background: #2b5cff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 5px;
+            box-shadow: 0 8px 20px rgba(43, 92, 255, 0.3);
+        }
+
+        .register-btn:hover {
+            background: #1a47df;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .signin-link {
+            text-align: center;
+            margin-top: auto;
+            font-size: 12px;
+            color: #666;
+            padding-top: 10px;
+        }
+
+        .signin-link a {
+            color: #2b5cff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .signin-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-screen">
+        <!-- ඉහළ පින්තූරය සහ ලාංඡනය -->
+        <div class="header-image">
+            <div class="app-logo">Dream<br>Estates.</div>
+        </div>
+
+        <!-- රෙජිස්ටර් ෆෝම් එක -->
+        <div class="register-content">
+            <h2>Create Account</h2>
+            <p>Join Dream Estates today.</p>
+
+            <form id="registerForm">
+                <div class="input-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" required placeholder="Wasana">
+                </div>
+                <div class="input-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" required placeholder="Kalpani">
+                </div>
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="name@example.com">
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="register-btn">Sign Up</button>
+                
+                <div class="error-message" id="errorMessage">Registration failed. Please try again.</div>
+            </form>
+
+            <div class="signin-link">
+                Already have an account? <a href="index.html">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); 
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.style.display = 'none'; 
+
+            const userData = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                role: "USER"
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                if (response.ok) {
+                    alert('Registration Successful! Please login.');
+                    window.location.href = 'index.html';
+                } else {
+                    errorMessage.textContent = 'මෙම ඊමේල් ලිපිනය දැනටමත් භාවිතයේ ඇත නැතහොත් දෝෂයකි.';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorMessage.textContent = 'Connection failed! Backend is down.';
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

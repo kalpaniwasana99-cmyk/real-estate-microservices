@@ -42,15 +42,26 @@ public class UserService {
         return userOpt.orElse(null);
     }
 
-    // 5. User කෙනෙකුගේ තොරතුරු යාවත්කාලීන කිරීම (Update)
+    // 5. User කෙනෙකුගේ තොරතුරු යාවත්කාලීන කිරීම (Update) - නිවැරදි කරන ලදී
     public User updateUser(String id, User userDetails) {
         Optional<User> userOpt = userRepository.findById(id);
         if (userOpt.isPresent()) {
             User existingUser = userOpt.get();
-            existingUser.setUsername(userDetails.getUsername());
+            
+            // username වෙනුවට firstName සහ lastName යාවත්කාලීන කිරීම
+            existingUser.setFirstName(userDetails.getFirstName());
+            existingUser.setLastName(userDetails.getLastName());
             existingUser.setEmail(userDetails.getEmail());
-            existingUser.setPassword(userDetails.getPassword());
-            existingUser.setRole(userDetails.getRole());
+            
+            // පාස්වර්ඩ් එක හිස්ව (null) නොමැති නම් පමණක් යාවත්කාලීන කිරීම
+            if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+                existingUser.setPassword(userDetails.getPassword());
+            }
+            
+            if (userDetails.getRole() != null) {
+                existingUser.setRole(userDetails.getRole());
+            }
+
             return userRepository.save(existingUser);
         }
         return null;
