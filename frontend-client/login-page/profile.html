@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Dream Estates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Mobile Phone Screen Frame */
+        .mobile-screen {
+            background-color: #ffffff;
+            width: 380px; 
+            height: 720px; 
+            border-radius: 45px; 
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2), inset 0 0 0 10px #1a1a1a; 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Professional Header */
+        .profile-header {
+            background: linear-gradient(135deg, #2b5cff, #0d3b66);
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            border-bottom-left-radius: 35px;
+            border-bottom-right-radius: 35px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 75px;
+            height: 75px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .profile-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-header span {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.75);
+            margin-top: 2px;
+        }
+
+        /* Content Body */
+        .profile-content {
+            padding: 30px 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #444;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #e1e5ee;
+            border-radius: 14px;
+            font-size: 13px;
+            outline: none;
+            background-color: #f8f9fa;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #2b5cff;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 92, 255, 0.1);
+        }
+
+        .update-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #2b5cff, #1a47df);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 8px 20px rgba(43, 92, 255, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .update-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(43, 92, 255, 0.4);
+        }
+
+        .delete-btn {
+            width: 100%;
+            padding: 12px;
+            background: #fff5f5;
+            color: #e53e3e;
+            border: 1.5px solid #fed7d7;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #ffe3e3;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            color: #718096;
+            border: none;
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: auto;
+            text-align: center;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .logout-btn:hover {
+            color: #2d3748;
+            text-decoration: underline;
+        }
+
+        /* --- SCREEN CENTRE CUSTOM POPUP MODAL STYLES --- */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            width: 82%;
+            padding: 25px 20px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            width: 50px;
+            height: 50px;
+            background: #e6f4ea;
+            color: #34a853;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin: 0 auto 15px auto;
+            font-weight: 700;
+        }
+
+        .modal-box h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .modal-box p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 11px;
+            background: #2b5cff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(43, 92, 255, 0.3);
+        }
+
+        .modal-btn:hover {
+            background: #1a47df;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-screen">
+        <!-- Professional Header with Dynamic Info -->
+        <div class="profile-header">
+            <div class="avatar" id="userAvatar">U</div>
+            <h3 id="headerName">Loading...</h3>
+            <span id="headerEmail">please wait</span>
+        </div>
+
+        <!-- Editable Form Fields -->
+        <div class="profile-content">
+            <div class="section-title">Personal Information</div>
+            <form id="profileForm">
+                <div class="input-group">
+                    <label>First Name</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                <div class="input-group">
+                    <label>Last Name</label>
+                    <input type="text" id="lastName" required>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <button type="submit" class="update-btn">Save Changes</button>
+                <button type="button" class="delete-btn" id="deleteBtn">Delete Account</button>
+            </form>
+
+            <button class="logout-btn" id="logoutBtn">Sign Out</button>
+        </div>
+
+        <!-- Custom Screen-Centre Popup Modal -->
+        <div class="modal-overlay" id="customModal">
+            <div class="modal-box">
+                <div class="modal-icon">✓</div>
+                <h4 id="modalTitle">Success</h4>
+                <p id="modalMessage">Operation completed successfully.</p>
+                <button class="modal-btn" id="modalOkBtn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Custom Popup පෙන්වීමේ පහසුකම
+        function showPopup(title, message, callback) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            const modal = document.getElementById('customModal');
+            modal.classList.add('active');
+
+            const okBtn = document.getElementById('modalOkBtn');
+            // කලින් තිබුණු Event Listeners අයින් කිරීමට
+            const newOkBtn = okBtn.cloneNode(true);
+            okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+
+            newOkBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+                if (callback) callback();
+            });
+        }
+
+        // 1. Fetch User Data on Load (Read)
+        window.addEventListener('DOMContentLoaded', async () => {
+            const userId = localStorage.getItem('userId');
+            const token = localStorage.getItem('authToken');
+            
+            if (!userId || userId === 'null' || userId === 'undefined') {
+                alert('කරුණාකර නැවත ලොගින් වන්න.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8080/auth/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    document.getElementById('firstName').value = user.firstName || '';
+                    document.getElementById('lastName').value = user.lastName || '';
+                    document.getElementById('email').value = user.email || '';
+                    
+                    const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+                    document.getElementById('headerName').innerText = fullName || 'User Account';
+                    document.getElementById('headerEmail').innerText = user.email || '';
+
+                    if(user.firstName) {
+                        document.getElementById('userAvatar').innerText = user.firstName.charAt(0).toUpperCase();
+                    }
+                } else {
+                    alert('Failed to load user data.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        // 2. Update Profile (Update)
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userId = localStorage.getItem('userId');
+            const token = localStorage.getItem('authToken');
+
+            const updatedData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value
+            };
+
+            try {
+                const response = await fetch(`http://localhost:8080/auth/users/${userId}`, {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (response.ok) {
+                    // බ්‍රවුසරයේ සාමාන්‍ය ඇලට් එක වෙනුවට Screen එක මැදින් ලස්සනට පෙන්වීම
+                    showPopup('Success!', 'Profile updated successfully!', () => {
+                        document.getElementById('headerName').innerText = `${updatedData.firstName} ${updatedData.lastName}`;
+                        document.getElementById('headerEmail').innerText = updatedData.email;
+                        if(updatedData.firstName) {
+                            document.getElementById('userAvatar').innerText = updatedData.firstName.charAt(0).toUpperCase();
+                        }
+                    });
+                } else {
+                    showPopup('Error', 'Update failed.', null);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showPopup('Connection Error', 'Could not connect to server.', null);
+            }
+        });
+
+        // 3. Delete Account (Delete)
+        document.getElementById('deleteBtn').addEventListener('click', async () => {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                const userId = localStorage.getItem('userId');
+                const token = localStorage.getItem('authToken');
+
+                try {
+                    const response = await fetch(`http://localhost:8080/auth/users/${userId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        showPopup('Deleted', 'Account deleted successfully.', () => {
+                            localStorage.clear();
+                            window.location.href = 'index.html';
+                        });
+                    } else {
+                        showPopup('Error', 'Delete failed.', null);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showPopup('Connection Error', 'Could not connect to server.', null);
+                }
+            }
+        });
+
+        // 4. Sign Out
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
