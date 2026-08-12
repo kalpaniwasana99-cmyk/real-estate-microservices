@@ -14,10 +14,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable) // CSRF ආරක්ෂාව සම්පූර්ණයෙන්ම අක්‍රීය කිරීම
+            .csrf(AbstractHttpConfigurer::disable) // CSRF ආරක්ෂාව අක්‍රීය කිරීම
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // දැනට සියලුම Requests වලට අවසර දීම
+                // Swagger UI සහ API Docs සඳහා ඕනෑම කෙනෙකුට අවසර දීම (අත්‍යවශ්‍යයි)
+                .requestMatchers(
+                    "/swagger-ui/**", 
+                    "/v3/api-docs/**", 
+                    "/swagger-ui.html",
+                    "/auth/**" // Login සහ Register සඳහාද ඕනෑම කෙනෙකුට අවසර දීම
+                ).permitAll()
+                // වෙනත් ඕනෑම ඉල්ලීමකටද දැනට අවසර දීම
+                .anyRequest().permitAll()
             );
+            
         return http.build();
     }
 }
