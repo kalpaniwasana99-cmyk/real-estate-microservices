@@ -8,26 +8,30 @@ public class User {
     @Id
     private String id;
     
-    // username වෙනුවට Frontend එකට ගැළපෙන පරිදි firstName සහ lastName එකතු කළා
     private String firstName;
     private String lastName;
-    
     private String email;
     private String password;
     private String role;
+    
+    // අලුතින් එකතු කළ fields
+    private String phone;
+    private String address;
 
     // හිස් Constructor එක
     public User() {
     }
 
     // සියලු විස්තර සහිත Constructor එක
-    public User(String id, String firstName, String lastName, String email, String password, String role) {
+    public User(String id, String firstName, String lastName, String email, String password, String role, String phone, String address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.phone = phone;
+        this.address = address;
     }
 
     // Getters සහ Setters
@@ -77,5 +81,21 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
