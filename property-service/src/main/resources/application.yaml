@@ -1,0 +1,10 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: property-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/real_estate_db
+      database: real_estate_db
