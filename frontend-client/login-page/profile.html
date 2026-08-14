@@ -4,93 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Dream Estates</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: linear-gradient(135deg, #ece9e6 0%, #ffffff 100%); display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .mobile-screen { background-color: #ffffff; width: 380px; height: 720px; border-radius: 45px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2), inset 0 0 0 10px #1a1a1a; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .profile-header { background: linear-gradient(135deg, #1a1a1a, #333333); height: 30%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; position: relative; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; padding: 20px; text-align: center; flex-shrink: 0; }
-        .avatar { width: 75px; height: 75px; background-color: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); color: #ffffff; border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; font-weight: 700; margin-bottom: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
-        .profile-header h3 { font-size: 18px; font-weight: 600; letter-spacing: 0.5px; }
-        .profile-header span { font-size: 12px; color: rgba(255, 255, 255, 0.75); margin-top: 2px; }
-        .profile-content { padding: 25px 25px; flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
-        .section-title { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
-        .input-group { margin-bottom: 14px; }
-        .input-group label { display: block; margin-bottom: 5px; color: #444; font-size: 12px; font-weight: 500; }
-        .input-group input { width: 100%; padding: 11px 14px; border: 1.5px solid #e1e5ee; border-radius: 14px; font-size: 13px; outline: none; background-color: #f8f9fa; color: #333; transition: all 0.3s ease; }
-        .input-group input:focus { border-color: #1a1a1a; background-color: #ffffff; box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.1); }
-        .update-btn { width: 100%; padding: 13px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 5px; box-shadow: 0 8px 20px rgba(26, 26, 26, 0.3); transition: transform 0.2s, box-shadow 0.2s, background 0.3s; }
-        .update-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 25px rgba(26, 26, 26, 0.4); background: #333333; }
-        .delete-btn { width: 100%; padding: 11px; background: #fff5f5; color: #e53e3e; border: 1.5px solid #fed7d7; border-radius: 14px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 8px; transition: background 0.3s; }
-        .delete-btn:hover { background: #ffe3e3; }
-        .logout-btn { width: 100%; padding: 8px; background: transparent; color: #718096; border: none; font-size: 13px; cursor: pointer; margin-top: 10px; text-align: center; font-weight: 500; transition: color 0.2s; }
-        .logout-btn:hover { color: #2d3748; text-decoration: underline; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        body { background-color: #060f26; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Navbar */
+        nav { width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: #0b1221; border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; }
+        .logo { font-size: 24px; font-weight: 700; color: #ffffff; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: #cccccc; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .nav-links a.active, .nav-links a:hover { color: #ffd700; }
+        .logout-nav-btn { padding: 8px 20px; background: transparent; color: #e53e3e; border: 1px solid #e53e3e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .logout-nav-btn:hover { background: #e53e3e; color: white; }
+
+        /* Profile Header */
+        .profile-header-section { background: linear-gradient(135deg, #0b1221, #060f26); padding: 80px 50px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 40px; position: relative; overflow: hidden; }
+        .profile-header-section::before { content: ''; position: absolute; left: 50px; top: 0; width: 4px; height: 100%; background-color: #ffd700; }
+        .avatar { width: 120px; height: 120px; background: rgba(24, 119, 242, 0.1); border: 2px solid #1877f2; color: #1877f2; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 45px; font-weight: 700; margin-left: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .profile-title { flex: 1; }
+        .profile-title h5 { color: #ffd700; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
+        .profile-title h1 { font-size: 40px; font-weight: 700; line-height: 1.2; text-transform: uppercase; }
+        .profile-title p { color: #a8b2d1; font-size: 16px; margin-top: 5px; }
+
+        /* Profile Content */
+        .profile-content-section { padding: 60px 50px; flex-grow: 1; display: flex; justify-content: center; }
+        .form-card { background: #0b1221; width: 100%; max-width: 800px; padding: 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        .section-title { font-size: 18px; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; border-left: 3px solid #1877f2; padding-left: 15px; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group.full-width { grid-column: span 2; }
+        .input-group label { margin-bottom: 8px; color: #a8b2d1; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group input { padding: 14px 20px; border: 1px solid #1f2937; border-radius: 8px; font-size: 15px; outline: none; background-color: #111b33; color: white; transition: all 0.3s ease; }
+        .input-group input:focus { border-color: #ffd700; box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1); }
+        
+        .action-buttons { display: flex; justify-content: flex-end; gap: 15px; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .update-btn { padding: 14px 30px; background: #1877f2; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        .update-btn:hover { background: #145dbf; }
+        .delete-btn { padding: 14px 30px; background: rgba(229, 62, 62, 0.1); color: #e53e3e; border: 1px solid #e53e3e; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        .delete-btn:hover { background: #e53e3e; color: white; }
 
         /* --- CUSTOM POPUP MODAL --- */
-        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-box { background: #ffffff; width: 85%; padding: 30px 20px; border-radius: 24px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-box { background: #111b33; width: 400px; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); transform: scale(0.8); transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.1); }
         .modal-overlay.active .modal-box { transform: scale(1); }
-        .modal-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px auto; font-weight: 700; }
-        .modal-icon.success { background: #e6f4ea; color: #34a853; }
-        .modal-icon.error { background: #ffebee; color: #d32f2f; }
-        .modal-icon.warning { background: #fff8e1; color: #fbc02d; }
-        .modal-box h4 { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
-        .modal-box p { font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.5; }
-        .modal-btn-group { display: flex; gap: 10px; }
-        .modal-btn { flex: 1; padding: 14px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
-        .modal-btn:hover { background: #333333; }
-        .modal-btn.cancel-btn { background: #f1f1f1; color: #333; }
-        .modal-btn.cancel-btn:hover { background: #e1e1e1; }
+        .modal-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; margin: 0 auto 20px auto; font-weight: 700; }
+        .modal-icon.success { background: rgba(52, 168, 83, 0.1); color: #34a853; border: 2px solid #34a853; }
+        .modal-icon.error { background: rgba(211, 47, 47, 0.1); color: #d32f2f; border: 2px solid #d32f2f; }
+        .modal-icon.warning { background: rgba(251, 192, 45, 0.1); color: #fbc02d; border: 2px solid #fbc02d; }
+        .modal-box h4 { font-size: 22px; font-weight: 600; color: #ffffff; margin-bottom: 10px; }
+        .modal-box p { font-size: 15px; color: #a8b2d1; margin-bottom: 30px; line-height: 1.5; }
+        .modal-btn-group { display: flex; gap: 15px; }
+        .modal-btn { flex: 1; padding: 12px; background: #1877f2; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        .modal-btn:hover { background: #145dbf; }
+        .modal-btn.cancel-btn { background: #1f2937; color: white; }
+        .modal-btn.cancel-btn:hover { background: #374151; }
+        
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .input-group.full-width { grid-column: span 1; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="mobile-screen">
-        <div class="profile-header">
-            <div class="avatar" id="userAvatar">U</div>
-            <h3 id="headerName">Loading...</h3>
-            <span id="headerEmail">please wait</span>
+    <nav>
+        <div class="logo">DREAM ESTATES</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#" class="active">Profile Settings</a>
+            <a href="#">My Properties</a>
         </div>
+        <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
+    </nav>
 
-        <div class="profile-content">
+    <div class="profile-header-section">
+        <div class="avatar" id="userAvatar">U</div>
+        <div class="profile-title">
+            <h5>Member Profile</h5>
+            <h1 id="headerName">Loading...</h1>
+            <p id="headerEmail">Please wait...</p>
+        </div>
+    </div>
+
+    <div class="profile-content-section">
+        <div class="form-card">
             <div class="section-title">Personal Information</div>
             <form id="profileForm">
-                <div class="input-group">
-                    <label>First Name</label>
-                    <input type="text" id="firstName" required>
-                </div>
-                <div class="input-group">
-                    <label>Last Name</label>
-                    <input type="text" id="lastName" required>
-                </div>
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="input-group">
-                    <label>Phone Number</label>
-                    <input type="text" id="phone" placeholder="+94 7X XXX XXXX">
-                </div>
-                <div class="input-group">
-                    <label>Address</label>
-                    <input type="text" id="address" placeholder="123, Main Street, Colombo">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>First Name</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Last Name</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Email Address</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="phone" placeholder="+94 7X XXX XXXX">
+                    </div>
+                    <div class="input-group">
+                        <label>Address</label>
+                        <input type="text" id="address" placeholder="123, Main Street, Colombo">
+                    </div>
                 </div>
                 
-                <button type="submit" class="update-btn">Save Changes</button>
-                <button type="button" class="delete-btn" id="deleteBtn">Delete Account</button>
+                <div class="action-buttons">
+                    <button type="button" class="delete-btn" id="deleteBtn">Delete Account</button>
+                    <button type="submit" class="update-btn">Save Changes</button>
+                </div>
             </form>
-
-            <button class="logout-btn" id="logoutBtn">Sign Out</button>
         </div>
+    </div>
 
-        <div class="modal-overlay" id="customModal">
-            <div class="modal-box">
-                <div class="modal-icon" id="modalIcon">✓</div>
-                <h4 id="modalTitle">Success!</h4>
-                <p id="modalMessage">Operation successful.</p>
-                <div class="modal-btn-group" id="modalBtnGroup"></div>
-            </div>
+    <!-- Popup Modal -->
+    <div class="modal-overlay" id="customModal">
+        <div class="modal-box">
+            <div class="modal-icon" id="modalIcon">✓</div>
+            <h4 id="modalTitle">Success!</h4>
+            <p id="modalMessage">Operation successful.</p>
+            <div class="modal-btn-group" id="modalBtnGroup"></div>
         </div>
     </div>
 
@@ -120,7 +160,7 @@
 
             const okBtn = document.createElement('button');
             okBtn.className = 'modal-btn';
-            okBtn.innerText = showCancel ? 'Delete' : 'OK';
+            okBtn.innerText = showCancel ? 'Confirm Delete' : 'OK';
             okBtn.onclick = () => {
                 modal.classList.remove('active');
                 if (onOk) onOk();
@@ -151,11 +191,11 @@
                     document.getElementById('firstName').value = user.firstName || '';
                     document.getElementById('lastName').value = user.lastName || '';
                     document.getElementById('email').value = user.email || '';
-                    document.getElementById('phone').value = user.phone || '';       // Phone Load කිරීම
-                    document.getElementById('address').value = user.address || '';   // Address Load කිරීම
+                    document.getElementById('phone').value = user.phone || '';      
+                    document.getElementById('address').value = user.address || '';   
                     
                     const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
-                    document.getElementById('headerName').innerText = fullName || 'User Account';
+                    document.getElementById('headerName').innerText = fullName || 'USER ACCOUNT';
                     document.getElementById('headerEmail').innerText = user.email || '';
 
                     if(user.firstName) {
@@ -177,8 +217,8 @@
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
                 email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,       // Phone යැවීම
-                address: document.getElementById('address').value   // Address යැවීම
+                phone: document.getElementById('phone').value,      
+                address: document.getElementById('address').value   
             };
 
             try {
@@ -190,7 +230,7 @@
 
                 if (response.ok) {
                     showPopup('success', 'Success!', 'Profile updated successfully!', () => {
-                        document.getElementById('headerName').innerText = `${updatedData.firstName} ${updatedData.lastName}`;
+                        document.getElementById('headerName').innerText = `${updatedData.firstName} ${updatedData.lastName}`.toUpperCase();
                         document.getElementById('headerEmail').innerText = updatedData.email;
                         if(updatedData.firstName) document.getElementById('userAvatar').innerText = updatedData.firstName.charAt(0).toUpperCase();
                     });
