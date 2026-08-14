@@ -1,4 +1,4 @@
-package com.realestate.notificationservice.dto;
+package com.realestate.notification_service.dto;
 
 import lombok.Data;
 

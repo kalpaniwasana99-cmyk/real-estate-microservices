@@ -1,6 +1,6 @@
-package com.realestate.notificationservice.repository;
+package com.realestate.notification_service.repository;
 
-import com.realestate.notificationservice.entity.Notification;
+import com.realestate.notification_service.entity.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

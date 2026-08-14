@@ -1,9 +1,9 @@
- package com.realestate.notificationservice.service;
+ package com.realestate.notification_service.service;
 
-import com.realestate.notificationservice.dto.EmailRequestDto;
-import com.realestate.notificationservice.dto.SmsRequestDto;
-import com.realestate.notificationservice.entity.Notification;
-import com.realestate.notificationservice.repository.NotificationRepository;
+import com.realestate.notification_service.dto.EmailRequestDto;
+import com.realestate.notification_service.dto.SmsRequestDto;
+import com.realestate.notification_service.entity.Notification;
+import com.realestate.notification_service.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
