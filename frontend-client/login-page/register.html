@@ -3,78 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Estate Portal - Sign Up</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Dream Estates - Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: linear-gradient(135deg, #ece9e6 0%, #ffffff 100%); display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .mobile-screen { background-color: #ffffff; width: 375px; height: 700px; border-radius: 40px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), inset 0 0 0 8px #f1f1f1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .header-image { background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80') center/cover no-repeat; height: 28%; position: relative; }
-        .header-image::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7)); }
-        .app-logo { position: absolute; bottom: 15px; left: 25px; color: #ffffff; z-index: 2; font-size: 24px; font-weight: 700; line-height: 1.2; }
-        .register-content { padding: 25px 25px; flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
-        .register-content h2 { color: #1a1a1a; font-size: 22px; font-weight: 600; margin-bottom: 3px; }
-        .register-content p { color: #888; font-size: 12px; margin-bottom: 20px; }
-        .input-group { margin-bottom: 12px; }
-        .input-group label { display: block; margin-bottom: 5px; color: #444; font-size: 12px; font-weight: 500; }
-        .input-group input { width: 100%; padding: 11px 14px; border: 1.5px solid #e1e5ee; border-radius: 12px; font-size: 13px; outline: none; background-color: #f8f9fa; transition: all 0.3s ease; }
-        .input-group input:focus { border-color: #1a1a1a; background-color: #ffffff; box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.1); }
-        .register-btn { width: 100%; padding: 13px; background: #1a1a1a; color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.3s, transform 0.2s; margin-top: 5px; box-shadow: 0 8px 20px rgba(26, 26, 26, 0.3); }
-        .register-btn:hover { background: #333333; transform: translateY(-2px); }
-        .signin-link { text-align: center; margin-top: auto; font-size: 12px; color: #666; padding-top: 10px; }
-        .signin-link a { color: #1a1a1a; text-decoration: none; font-weight: 600; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        body { background-color: #0b1221; color: #ffffff; overflow-x: hidden; }
+        
+        /* Navbar */
+        nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(11, 18, 33, 0.9); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-size: 24px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 10px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: #cccccc; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-links a:hover { color: #ffd700; }
+        .btn-nav { padding: 10px 25px; background: #1877f2; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; font-size: 14px; transition: background 0.3s; }
+        .btn-nav:hover { background: #145dbf; }
+
+        /* Register Section */
+        .register-section { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 100px 20px 40px 20px; background-color: #060f26; }
+        .register-container { display: flex; background: #0b1221; width: 1000px; max-width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
+        
+        /* Different Image for Register Page */
+        .register-image { flex: 1; background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover; position: relative; }
+        .register-image::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(11,18,33,0.2), #0b1221); }
+        
+        .register-form-area { flex: 1; padding: 50px 50px; display: flex; flex-direction: column; justify-content: center; }
+        
+        .register-form-area h2 { font-size: 32px; font-weight: 600; margin-bottom: 10px; border-left: 4px solid #ffd700; padding-left: 15px; }
+        .register-form-area p { color: #8892b0; font-size: 14px; margin-bottom: 35px; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .input-group { margin-bottom: 20px; }
+        .form-row .input-group { margin-bottom: 0; }
+        
+        .input-group label { display: block; margin-bottom: 8px; color: #a8b2d1; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group input { width: 100%; padding: 14px 20px; border: 1px solid #1f2937; border-radius: 10px; font-size: 14px; outline: none; background-color: #111b33; color: white; transition: all 0.3s ease; }
+        .input-group input:focus { border-color: #1877f2; box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.2); }
+        
+        .register-btn { width: 100%; padding: 16px; background: #1877f2; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; margin-top: 10px; }
+        .register-btn:hover { background: #145dbf; }
+        
+        .signin-link { text-align: center; margin-top: 25px; font-size: 14px; color: #8892b0; }
+        .signin-link a { color: #ffd700; text-decoration: none; font-weight: 600; }
         .signin-link a:hover { text-decoration: underline; }
 
         /* --- CUSTOM POPUP MODAL --- */
-        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-box { background: #ffffff; width: 85%; padding: 30px 20px; border-radius: 24px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-box { background: #111b33; width: 400px; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); transform: scale(0.8); transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.1); }
         .modal-overlay.active .modal-box { transform: scale(1); }
-        .modal-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px auto; font-weight: 700; }
-        .modal-icon.success { background: #e6f4ea; color: #34a853; }
-        .modal-icon.error { background: #ffebee; color: #d32f2f; }
-        .modal-box h4 { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
-        .modal-box p { font-size: 14px; color: #666; margin-bottom: 25px; }
-        .modal-btn { width: 100%; padding: 14px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
-        .modal-btn:hover { background: #333333; }
+        .modal-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; margin: 0 auto 20px auto; font-weight: 700; }
+        .modal-icon.success { background: rgba(52, 168, 83, 0.1); color: #34a853; border: 2px solid #34a853; }
+        .modal-icon.error { background: rgba(211, 47, 47, 0.1); color: #d32f2f; border: 2px solid #d32f2f; }
+        .modal-box h4 { font-size: 22px; font-weight: 600; color: #ffffff; margin-bottom: 10px; }
+        .modal-box p { font-size: 15px; color: #a8b2d1; margin-bottom: 30px; }
+        .modal-btn { width: 100%; padding: 14px; background: #1877f2; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        .modal-btn:hover { background: #145dbf; }
+
+        @media (max-width: 768px) {
+            .register-container { flex-direction: column; }
+            .register-image { height: 200px; flex: none; }
+            .register-image::after { background: linear-gradient(to bottom, rgba(11,18,33,0.2), #0b1221); }
+        }
     </style>
 </head>
 <body>
-    <div class="mobile-screen">
-        <div class="header-image"><div class="app-logo">Dream<br>Estates.</div></div>
-        <div class="register-content">
-            <h2>Create Account</h2>
-            <p>Join Dream Estates today.</p>
-            <form id="registerForm">
-                <div class="input-group">
-                    <label>First Name</label>
-                    <input type="text" id="firstName" required placeholder="Wasana">
-                </div>
-                <div class="input-group">
-                    <label>Last Name</label>
-                    <input type="text" id="lastName" required placeholder="Kalpani">
-                </div>
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email" required placeholder="name@example.com">
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="password" required placeholder="••••••••">
-                </div>
-                <button type="submit" class="register-btn">Sign Up</button>
-            </form>
-            <div class="signin-link">Already have an account? <a href="index.html">Sign in</a></div>
-        </div>
 
-        <!-- Popup Modal -->
-        <div class="modal-overlay" id="customModal">
-            <div class="modal-box">
-                <div class="modal-icon" id="modalIcon">✓</div>
-                <h4 id="modalTitle">Success!</h4>
-                <p id="modalMessage">Operation successful.</p>
-                <button class="modal-btn" id="modalOkBtn">OK</button>
+    <nav>
+        <div class="logo">DREAM ESTATES</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">About Us</a>
+            <a href="#">Properties</a>
+            <a href="#">Contact</a>
+        </div>
+        <a href="index.html" class="btn-nav">LOGIN TO PORTAL</a>
+    </nav>
+
+    <section class="register-section">
+        <div class="register-container">
+            <div class="register-image"></div>
+            <div class="register-form-area">
+                <h2>Create Account</h2>
+                <p>Join Dream Estates today and find your perfect property.</p>
+                
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>First Name</label>
+                            <input type="text" id="firstName" required placeholder="Wasana">
+                        </div>
+                        <div class="input-group">
+                            <label>Last Name</label>
+                            <input type="text" id="lastName" required placeholder="Kalpani">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" required placeholder="name@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="register-btn">Sign Up</button>
+                </form>
+                
+                <div class="signin-link">Already have an account? <a href="index.html">Sign in</a></div>
             </div>
+        </div>
+    </section>
+
+    <!-- Popup Modal -->
+    <div class="modal-overlay" id="customModal">
+        <div class="modal-box">
+            <div class="modal-icon" id="modalIcon">✓</div>
+            <h4 id="modalTitle">Success!</h4>
+            <p id="modalMessage">Operation successful.</p>
+            <button class="modal-btn" id="modalOkBtn">OK</button>
         </div>
     </div>
 
