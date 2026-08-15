@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Redis Server for Rate Limiting
+  
   redis:
     image: redis:alpine
     container_name: redis-cache
@@ -10,3 +10,38 @@ services:
     restart: always
 
   
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  
+  property-service:
+    build:
+      context: ./property-service
+      dockerfile: Dockerfile
+    container_name: property-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+    environment:
+      
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/real_estate_db
+
+  
+  frontend-client:
+    build:
+      context: ./frontend-client
+      dockerfile: Dockerfile
+    container_name: frontend-client
+    ports:
+      - "3000:80"
+    depends_on:
+      - property-service
+
+volumes:
+  mongo_data:

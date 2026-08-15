@@ -18,8 +18,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Swagger UI සහ API Docs සඳහා ඕනෑම කෙනෙකුට අවසර දීම (අත්‍යවශ්‍යයි)
                 .requestMatchers(
-                    "/swagger-ui/**", 
-                    "/v3/api-docs/**", 
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
                     "/swagger-ui.html",
                     "/auth/**" // Login සහ Register සඳහාද ඕනෑම කෙනෙකුට අවසර දීම
                 ).permitAll()
