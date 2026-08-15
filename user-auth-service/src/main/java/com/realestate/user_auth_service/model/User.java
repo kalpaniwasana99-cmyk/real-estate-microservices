@@ -14,15 +14,15 @@ public class User {
     private String password;
     private String role;
     
-    // අලුතින් එකතු කළ fields
+    
     private String phone;
     private String address;
 
-    // හිස් Constructor එක
+    
     public User() {
     }
 
-    // සියලු විස්තර සහිත Constructor එක
+    
     public User(String id, String firstName, String lastName, String email, String password, String role, String phone, String address) {
         this.id = id;
         this.firstName = firstName;
@@ -34,7 +34,7 @@ public class User {
         this.address = address;
     }
 
-    // Getters සහ Setters
+    
     public String getId() {
         return id;
     }

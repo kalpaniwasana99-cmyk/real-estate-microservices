@@ -26,6 +26,13 @@ spring:
           predicates:
             - Path=/auth/**
 
+        - id: property-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/properties/**
+          filters:
+            - AddRequestHeader=X-API-KEY, my-super-secret-property-api-key
+
   data:
     redis:
       host: localhost

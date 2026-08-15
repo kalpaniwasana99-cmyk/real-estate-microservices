@@ -1,0 +1,14 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: property-service
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/real_estate_db
+      database: real_estate_db
+
+app:
+  api:
+    key: mySecretApiKey123
