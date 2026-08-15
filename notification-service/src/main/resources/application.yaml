@@ -1,3 +1,29 @@
+server:
+  port: 8084
+
 spring:
   application:
     name: notification-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/real_estate_db
+      database: real_estate_db
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kaushbasnayake@gmail.com
+    password:  qrvqwwbxghvbkklp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+notification:
+  security:
+    api-key: notify-service-secret-key-123
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
