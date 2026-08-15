@@ -1,7 +1,13 @@
 version: '3.8'
 
 services:
-  # Redis Server for Rate Limiting
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    restart: always
+
   redis:
     image: redis:alpine
     container_name: redis-cache
@@ -9,4 +15,23 @@ services:
       - "6379:6379"
     restart: always
 
-  
+  user-auth-service:
+    build: ./user-auth-service
+    container_name: user-auth-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/realestate_auth
+    depends_on:
+      - mongo
+    restart: always
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - user-auth-service
+    restart: always

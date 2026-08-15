@@ -22,13 +22,18 @@ spring:
             allowCredentials: true
       routes:
         - id: user-auth-service
-          uri: http://localhost:8081
+          uri: http://user-auth-service:8081  # Docker service name එක
           predicates:
             - Path=/auth/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
 
   data:
     redis:
-      host: localhost
+      host: redis  # Docker service name එක
       port: 6379
 
 management:
