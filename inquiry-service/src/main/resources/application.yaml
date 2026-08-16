@@ -4,11 +4,6 @@ server:
 spring:
   application:
     name: inquiry-service
-  datasource:
-    url: jdbc:mysql://localhost:3306/real_estate_inquiry_db?createDatabaseIfNotExist=true
-    username: root
-    password: your_password # ඔයාගේ පරිගණකයේ MySQL Root Password එක මෙතනට දෙන්න
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/real_estate_inquiry_db

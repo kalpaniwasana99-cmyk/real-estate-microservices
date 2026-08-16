@@ -1,29 +1,25 @@
 package com.realestate.inquiry_service.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "inquiries")
+@Document(collection = "inquiries")
 public class Inquiry {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id; // MongoDB සඳහා ID එක String බවට වෙනස් කළා
 
-    @Column(nullable = false)
-    private Long propertyId; // Hasindu ගේ Property Service එකේ අදාළ දේපළේ ID එක
+    private Long propertyId; // Hasindu ගේ Property Service එකේ අදාළ දේපළේ ID එක (ඒක Long නිසා වෙනස් කළේ නෑ)
 
-    @Column(nullable = false)
     private String customerName;
 
-    @Column(nullable = false)
     private String customerEmail;
 
-    @Column(columnDefinition = "TEXT")
     private String message;
 
-    private LocalDateTime inquiryDate;
+    // Object එක හැදෙන වෙලාවෙම ස්වයංක්‍රීයව වෙලාව සේව් වීම සඳහා
+    private LocalDateTime inquiryDate = LocalDateTime.now(); 
 
     // Default Constructor
     public Inquiry() {
@@ -35,17 +31,12 @@ public class Inquiry {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.message = message;
-    }
-
-    // Record දාන මොහොතේ ස්වයංක්‍රීයව වෙලාව සේව් වීම සඳහා
-    @PrePersist
-    protected void onCreate() {
         this.inquiryDate = LocalDateTime.now();
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public Long getPropertyId() { return propertyId; }
     public void setPropertyId(Long propertyId) { this.propertyId = propertyId; }

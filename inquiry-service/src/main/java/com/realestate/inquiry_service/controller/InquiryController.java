@@ -36,4 +36,29 @@ public class InquiryController {
         List<Inquiry> inquiries = inquiryRepository.findByPropertyId(propertyId);
         return new ResponseEntity<>(inquiries, HttpStatus.OK);
     }
+
+    // 4. Inquiry එකක් Update කිරීම (Edit)
+    @PutMapping("/{id}")
+    public ResponseEntity<Inquiry> updateInquiry(@PathVariable String id, @RequestBody Inquiry inquiryDetails) {
+        return inquiryRepository.findById(id)
+                .map(inquiry -> {
+                    inquiry.setMessage(inquiryDetails.getMessage());
+                    inquiry.setCustomerName(inquiryDetails.getCustomerName());
+                    inquiry.setCustomerEmail(inquiryDetails.getCustomerEmail());
+                    Inquiry updatedInquiry = inquiryRepository.save(inquiry);
+                    return new ResponseEntity<>(updatedInquiry, HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    // 5. Inquiry එකක් Delete කිරීම
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteInquiry(@PathVariable String id) {
+        try {
+            inquiryRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
