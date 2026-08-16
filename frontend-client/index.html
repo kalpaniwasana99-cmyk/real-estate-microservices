@@ -7,33 +7,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-        body { background-color: #0b1221; color: #ffffff; overflow-x: hidden; }
+        body { background-color: #0b1221; color: #ffffff; overflow: hidden; /* Prevent scrolling since everything is in the hero or popup */ }
         
-        /* Navbar */
         nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(11, 18, 33, 0.9); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-size: 24px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 10px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: #cccccc; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        .nav-links a:hover { color: #ffd700; }
+        .nav-links a.active, .nav-links a:hover { color: #ffd700; }
+        
         .btn-nav { padding: 10px 25px; background: #1877f2; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; font-size: 14px; transition: background 0.3s; }
         .btn-nav:hover { background: #145dbf; }
-
-        /* Hero Section */
+        
         .hero { height: 100vh; background: linear-gradient(rgba(11, 18, 33, 0.7), rgba(11, 18, 33, 0.9)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; padding: 0 20px; }
         .hero h1 { font-size: 55px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
         .hero p { font-size: 18px; color: #cccccc; max-width: 600px; margin-bottom: 40px; }
         
-        .scroll-down { position: absolute; bottom: 40px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+        .scroll-down { position: absolute; bottom: 40px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: #ffffff; background: transparent; border: none; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
         .scroll-down span { animation: bounce 2s infinite; font-size: 24px; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-15px); } 60% { transform: translateY(-7px); } }
-
-        /* Login Section */
-        .login-section { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 100px 20px; background-color: #060f26; }
-        .login-container { display: flex; background: #0b1221; width: 1000px; max-width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
-        .login-image { flex: 1; background: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover; position: relative; }
-        .login-image::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(11,18,33,0.2), #0b1221); }
-        .login-form-area { flex: 1; padding: 60px 50px; display: flex; flex-direction: column; justify-content: center; }
         
+        /* LOGIN POPUP MODAL STYLES */
+        .login-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .login-modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .login-container { display: flex; background: #0b1221; width: 1000px; max-width: 95%; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); position: relative; transform: translateY(-30px); transition: transform 0.3s ease; }
+        .login-modal-overlay.active .login-container { transform: translateY(0); }
+        
+        .close-login-btn { position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: #a8b2d1; font-size: 28px; font-weight: bold; cursor: pointer; z-index: 10; transition: color 0.3s; }
+        .close-login-btn:hover { color: #ffffff; }
+
+        .login-image { flex: 1; background: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover; position: relative; min-height: 500px; }
+        .login-image::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(11,18,33,0.2), #0b1221); }
+        
+        .login-form-area { flex: 1; padding: 60px 50px; display: flex; flex-direction: column; justify-content: center; }
         .login-form-area h2 { font-size: 32px; font-weight: 600; margin-bottom: 10px; border-left: 4px solid #ffd700; padding-left: 15px; }
         .login-form-area p { color: #8892b0; font-size: 14px; margin-bottom: 40px; }
         
@@ -44,12 +50,13 @@
         
         .login-btn { width: 100%; padding: 16px; background: #1877f2; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; margin-top: 10px; }
         .login-btn:hover { background: #145dbf; }
+        
         .signup-link { text-align: center; margin-top: 30px; font-size: 14px; color: #8892b0; }
         .signup-link a { color: #ffd700; text-decoration: none; font-weight: 600; }
         .signup-link a:hover { text-decoration: underline; }
 
-        /* --- CUSTOM POPUP MODAL --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        /* General Popup Modal for Alerts */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-box { background: #111b33; width: 400px; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); transform: scale(0.8); transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.1); }
         .modal-overlay.active .modal-box { transform: scale(1); }
@@ -60,32 +67,42 @@
         .modal-box p { font-size: 15px; color: #a8b2d1; margin-bottom: 30px; }
         .modal-btn { width: 100%; padding: 14px; background: #1877f2; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
         .modal-btn:hover { background: #145dbf; }
+        
+        @media (max-width: 768px) {
+            .login-container { flex-direction: column; }
+            .login-image { min-height: 200px; flex: none; }
+            .login-image::after { background: linear-gradient(to bottom, rgba(11,18,33,0.2), #0b1221); }
+        }
     </style>
 </head>
 <body>
-
     <nav>
         <div class="logo">DREAM ESTATES</div>
         <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">About Us</a>
-            <a href="#">Properties</a>
-            <a href="#">Contact</a>
+            <a href="index.html" class="active">Home</a>
+            <a href="properties.html">Properties</a>
+            <a href="my-properties.html">My Dashboard</a>
+            <a href="profile.html">Profile</a>
         </div>
-        <a href="#loginFormSection" class="btn-nav">LOGIN TO PORTAL</a>
+        <!-- Trigger Button -->
+        <button id="openLoginBtnNav" class="btn-nav">LOGIN TO PORTAL</button>
     </nav>
 
     <section class="hero">
         <h1>Find Your Dream Property</h1>
         <p>Experience luxury living with our exclusive collection of estates tailored for your lifestyle. Join our portal to explore more.</p>
-        <a href="#loginFormSection" class="scroll-down">
+        
+        <!-- Second Trigger Button -->
+        <button id="openLoginBtnHero" class="scroll-down">
             Explore More
             <span>˅</span>
-        </a>
+        </button>
     </section>
 
-    <section class="login-section" id="loginFormSection">
+    <!-- THE LOGIN POPUP MODAL -->
+    <div class="login-modal-overlay" id="mainLoginModal">
         <div class="login-container">
+            <button class="close-login-btn" id="closeLoginBtn">&times;</button>
             <div class="login-image"></div>
             <div class="login-form-area">
                 <h2>Welcome Back</h2>
@@ -104,9 +121,9 @@
                 <div class="signup-link">Don't have an account? <a href="register.html">Sign up</a></div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Popup Modal -->
+    <!-- Alert Message Popup Modal -->
     <div class="modal-overlay" id="customModal">
         <div class="modal-box">
             <div class="modal-icon" id="modalIcon">✓</div>
@@ -117,6 +134,32 @@
     </div>
 
     <script>
+        // Logic to Open & Close Login Modal
+        const mainLoginModal = document.getElementById('mainLoginModal');
+        const openLoginBtnNav = document.getElementById('openLoginBtnNav');
+        const openLoginBtnHero = document.getElementById('openLoginBtnHero');
+        const closeLoginBtn = document.getElementById('closeLoginBtn');
+
+        function openLoginModal() {
+            mainLoginModal.classList.add('active');
+        }
+
+        function closeLoginModal() {
+            mainLoginModal.classList.remove('active');
+        }
+
+        openLoginBtnNav.addEventListener('click', openLoginModal);
+        openLoginBtnHero.addEventListener('click', openLoginModal);
+        closeLoginBtn.addEventListener('click', closeLoginModal);
+
+        // Close modal when clicking outside the box
+        mainLoginModal.addEventListener('click', (e) => {
+            if (e.target === mainLoginModal) {
+                closeLoginModal();
+            }
+        });
+
+        // General Alert Popup Function
         function showPopup(type, title, message, callback) {
             const modal = document.getElementById('customModal');
             const icon = document.getElementById('modalIcon');
@@ -139,6 +182,7 @@
             });
         }
 
+        // Handle Login Submission
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
             event.preventDefault(); 
             const email = document.getElementById('email').value;
@@ -159,6 +203,8 @@
                     const currentUserId = (data.user && data.user.id) ? data.user.id : (data.user && data.user._id) ? data.user._id : null;
                     if(currentUserId) localStorage.setItem('userId', currentUserId);
                     
+                    closeLoginModal(); // Hide login form before showing success popup
+
                     showPopup('success', 'Success!', 'Login Successful! Welcome to Dream Estates.', () => {
                         window.location.href = 'profile.html';
                     });

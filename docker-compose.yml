@@ -1,13 +1,7 @@
 version: '3.8'
 
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    restart: always
-
+  
   redis:
     image: redis:alpine
     container_name: redis-cache
@@ -15,23 +9,37 @@ services:
       - "6379:6379"
     restart: always
 
-  user-auth-service:
-    build: ./user-auth-service
-    container_name: user-auth-service
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-container
     ports:
-      - "8081:8081"
-    environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/realestate_auth
-    depends_on:
-      - mongo
-    restart: always
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
 
-  api-gateway:
-    build: ./api-gateway
-    container_name: api-gateway
+  
+  property-service:
+    build:
+      context: ./property-service
+      dockerfile: Dockerfile
+    container_name: property-service
     ports:
-      - "8080:8080"
+      - "8082:8082"
     depends_on:
-      - redis
-      - user-auth-service
-    restart: always
+      - mongodb
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/real_estate_db
+
+  
+  frontend-client:
+    build:
+      context: ./frontend-client
+      dockerfile: Dockerfile
+    container_name: frontend-client
+    ports:
+      - "3000:80"
+    depends_on:
+      - property-service
+
+volumes:
+  mongo_data:
