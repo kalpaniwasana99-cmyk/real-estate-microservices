@@ -9,7 +9,6 @@ services:
       - "6379:6379"
     restart: always
 
-  
   mongodb:
     image: mongo:latest
     container_name: mongodb-container
@@ -29,7 +28,6 @@ services:
     depends_on:
       - mongodb
     environment:
-      
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/real_estate_db
 
   
