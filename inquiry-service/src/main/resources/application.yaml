@@ -1,3 +1,14 @@
+server:
+  port: 8084 # වෙනත් සේවාවන් සමග ගැටෙන්නේ නැති port එකක්
+
 spring:
   application:
     name: inquiry-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/real_estate_inquiry_db?createDatabaseIfNotExist=true
+    username: root
+    password: your_password # ඔයාගේ පරිගණකයේ MySQL Root Password එක මෙතනට දෙන්න
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
