@@ -1,0 +1,56 @@
+openapi: 3.0.0
+info:
+  title: Property Service API
+  description: API documentation for managing real estate properties in Dream Estates.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8082
+    description: Local Development Server
+paths:
+  /api/properties:
+    get:
+      summary: Get all properties
+      description: Retrieves a list of all available properties in the system. Requires X-API-KEY header.
+      parameters:
+        - in: header
+          name: X-API-KEY
+          required: true
+          schema:
+            type: string
+            example: mySecretApiKey123
+          description: Secret API Key for service authentication
+      responses:
+        '200':
+          description: Successful response with a list of properties
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property'
+        '401':
+          description: Unauthorized - Missing or invalid API Key
+
+components:
+  schemas:
+    Property:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6a7f0e8ba42fe231897c75ea"
+        title:
+          type: string
+          example: "Rent House"
+        description:
+          type: string
+          example: "2 Bedroom house"
+        price:
+          type: number
+          example: 10000.0
+        location:
+          type: string
+          example: "Malabe"
+        ownerId:
+          type: string
+          example: "6a7f0301f49bb31b171db1f5"
