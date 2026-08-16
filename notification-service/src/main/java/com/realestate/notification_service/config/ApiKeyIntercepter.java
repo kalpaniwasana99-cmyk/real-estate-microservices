@@ -14,6 +14,11 @@ public class ApiKeyIntercepter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // CORS preflight requests skip කරන්න
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
         String requestApiKey = request.getHeader("X-API-KEY");
 
         if (requestApiKey == null || !requestApiKey.equals(apiKey)) {
