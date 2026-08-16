@@ -6,35 +6,18 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.realestate</groupId>
     <artifactId>user-auth-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>user-auth-service</name>
     <description>User Authentication Service</description>
-<<<<<<< HEAD
-    
-    <properties>
-        <java.version>21</java.version>
-    </properties>
-    
-=======
-
-
-    <properties>
-        <java.version>17</java.version>
-    </properties>
-
-    <dependencies>
-        <!-- Spring Boot Starters -->
-
 
     <properties>
         <java.version>21</java.version>
     </properties>
 
->>>>>>> a8ad6a6cd665cee6f89c6c90c95dbf0d82f26026
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,18 +28,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-<<<<<<< HEAD
-=======
-
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
-        <!-- Lombok & DevTools -->
         <dependency>
-
-
->>>>>>> a8ad6a6cd665cee6f89c6c90c95dbf0d82f26026
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -67,21 +42,6 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-<<<<<<< HEAD
-=======
-
->>>>>>> a8ad6a6cd665cee6f89c6c90c95dbf0d82f26026
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> a8ad6a6cd665cee6f89c6c90c95dbf0d82f26026
-        <!-- JWT (JSON Web Token) Dependencies -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -99,35 +59,6 @@
             <version>0.11.5</version>
             <scope>runtime</scope>
         </dependency>
-<<<<<<< HEAD
-        
-=======
-
-
-        <!-- Swagger / OpenAPI -->
-
-
->>>>>>> a8ad6a6cd665cee6f89c6c90c95dbf0d82f26026
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-<<<<<<< HEAD
-=======
-
->>>>>>> a8ad6a6cd665cee6f89c6c90c95dbf0d82f26026
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.3.0</version>
-        </dependency>
-<<<<<<< HEAD
-    </dependencies>
-    
-=======
-
-
-        <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -135,11 +66,6 @@
         </dependency>
     </dependencies>
 
-
-    </dependencies>
-
-
->>>>>>> a8ad6a6cd665cee6f89c6c90c95dbf0d82f26026
     <build>
         <plugins>
             <plugin>

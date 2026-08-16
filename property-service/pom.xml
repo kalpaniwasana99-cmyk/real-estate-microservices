@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.4</version> <!-- Gateway එකේ Version එකටම සමානයි -->
-        <relativePath/> 
+        <relativePath/>
     </parent>
     <groupId>com.realestate</groupId>
     <artifactId>property-service</artifactId>
