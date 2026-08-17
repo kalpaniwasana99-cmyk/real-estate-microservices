@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/payments")
+@CrossOrigin(origins = "*") // Live server එකෙන් එන ඩේටා බ්ලොක් නොවී බාරගැනීමට
 public class PaymentController {
 
     @Autowired
@@ -44,5 +45,15 @@ public class PaymentController {
         Optional<Payment> payment = paymentRepository.findById(id);
         return payment.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // 5. ගෙවීමක් මැකීමට (DELETE: /api/payments/{id})
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePayment(@PathVariable String id) {
+        if (paymentRepository.existsById(id)) {
+            paymentRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
