@@ -1,11 +1,11 @@
 package com.realestate.notification_service.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "notifications")
+@Document(collection = "notifications")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,17 +13,12 @@ import java.time.LocalDateTime;
 public class Notification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String recipient; // Email or Phone Number
-    private String subject;   // Email Subject 
-    
-    @Column(length = 1000)
-    private String message;   // Notification 
-    
+    private String subject;
+    private String message;
     private String type;      // EMAIL or SMS
     private String status;    // SENT or FAILED
-
     private LocalDateTime timestamp;
 }

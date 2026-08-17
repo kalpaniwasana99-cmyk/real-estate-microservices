@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications - Dream Estates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        body { background-color: #060f26; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+        nav { width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: #0b1221; border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; }
+        .logo { font-size: 24px; font-weight: 700; color: #ffffff; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: #cccccc; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .nav-links a.active, .nav-links a:hover { color: #ffd700; }
+        .logout-nav-btn { padding: 8px 20px; background: transparent; color: #e53e3e; border: 1px solid #e53e3e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .logout-nav-btn:hover { background: #e53e3e; color: white; }
+        .container { padding: 40px 50px; max-width: 900px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 30px; }
+        .card { background: #0b1221; padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        .section-title { font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; border-left: 3px solid #1877f2; padding-left: 15px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; }
+        .tab-btn { padding: 10px 20px; background: #111b33; color: #a8b2d1; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
+        .tab-btn.active { background: #1877f2; color: white; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; color: #a8b2d1; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group input, .input-group textarea { width: 100%; padding: 14px 18px; border: 1px solid #1f2937; border-radius: 10px; font-size: 15px; outline: none; background-color: #111b33; color: white; font-family: inherit; }
+        .input-group textarea { resize: vertical; min-height: 100px; }
+        .send-btn { width: 100%; padding: 15px; background: #1877f2; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        .send-btn:hover { background: #145dbf; }
+        .send-btn:disabled { background: #444; cursor: not-allowed; }
+        .status-msg { margin-top: 15px; padding: 12px; border-radius: 8px; font-size: 14px; display: none; }
+        .status-msg.success { background: rgba(52, 168, 83, 0.1); color: #34a853; border: 1px solid #34a853; display: block; }
+        .status-msg.error { background: rgba(211, 47, 47, 0.1); color: #d32f2f; border: 1px solid #d32f2f; display: block; }
+        .history-list { display: flex; flex-direction: column; gap: 15px; max-height: 500px; overflow-y: auto; padding-right: 5px; }
+        .history-item { background: #111b33; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); padding: 18px 20px; }
+        .history-item .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .history-item .type-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .type-badge.EMAIL { background: rgba(24,119,242,0.15); color: #1877f2; }
+        .type-badge.SMS { background: rgba(255,215,0,0.15); color: #ffd700; }
+        .status-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 5px; text-transform: uppercase; }
+        .status-badge.SENT { background: rgba(52,168,83,0.15); color: #34a853; }
+        .status-badge.FAILED { background: rgba(211,47,47,0.15); color: #d32f2f; }
+        .history-item .recipient { color: #a8b2d1; font-size: 13px; margin-bottom: 5px; }
+        .history-item .message { color: #ffffff; font-size: 14px; }
+        .history-item .timestamp { color: #6b7280; font-size: 12px; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">DREAM ESTATES</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="properties.html">Explore Properties</a>
+            <a href="my-properties.html">My Dashboard</a>
+            <a href="notifications.html" class="active">Notifications</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <div class="section-title">Send Notification</div>
+            <div class="tabs">
+                <button class="tab-btn active" id="emailTabBtn" onclick="switchTab('email')">Email</button>
+                <button class="tab-btn" id="smsTabBtn" onclick="switchTab('sms')">SMS</button>
+            </div>
+
+            <form id="emailForm">
+                <div class="input-group">
+                    <label>Recipient Email</label>
+                    <input type="email" id="toEmail" placeholder="recipient@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Subject</label>
+                    <input type="text" id="subject" placeholder="Notification subject" required>
+                </div>
+                <div class="input-group">
+                    <label>Message</label>
+                    <textarea id="emailBody" placeholder="Write your message..." required></textarea>
+                </div>
+                <button type="submit" class="send-btn">Send Email</button>
+                <div class="status-msg" id="emailStatus"></div>
+            </form>
+
+            <form id="smsForm" style="display:none;">
+                <div class="input-group">
+                    <label>Recipient Phone Number</label>
+                    <input type="text" id="phoneNumber" placeholder="0771234567" required>
+                </div>
+                <div class="input-group">
+                    <label>Message</label>
+                    <textarea id="smsMessage" placeholder="Write your SMS message..." required></textarea>
+                </div>
+                <button type="submit" class="send-btn">Send SMS</button>
+                <div class="status-msg" id="smsStatus"></div>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="section-title">Notification History</div>
+            <div class="history-list" id="historyList">
+                <p style="color:#a8b2d1;text-align:center;">Loading history...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8084/api/notify';
+        const API_KEY = 'notify-service-secret-key-123';
+
+        function switchTab(tab) {
+            document.getElementById('emailForm').style.display = tab === 'email' ? 'block' : 'none';
+            document.getElementById('smsForm').style.display = tab === 'sms' ? 'block' : 'none';
+            document.getElementById('emailTabBtn').classList.toggle('active', tab === 'email');
+            document.getElementById('smsTabBtn').classList.toggle('active', tab === 'sms');
+        }
+
+        async function loadHistory() {
+            const list = document.getElementById('historyList');
+            try {
+                const res = await fetch(`${API_BASE}/history`, {
+                    headers: { 'X-API-KEY': API_KEY }
+                });
+                if (!res.ok) throw new Error('Failed to load');
+                const data = await res.json();
+                if (data.length === 0) {
+                    list.innerHTML = '<p style="color:#a8b2d1;text-align:center;">No notifications sent yet.</p>';
+                    return;
+                }
+                list.innerHTML = data.slice().reverse().map(n => `
+                    <div class="history-item">
+                        <div class="top-row">
+                            <span class="type-badge ${n.type}">${n.type}</span>
+                            <span class="status-badge ${n.status}">${n.status}</span>
+                        </div>
+                        <div class="recipient">To: ${n.recipient}</div>
+                        <div class="message">${n.subject ? `<strong>${n.subject}</strong><br>` : ''}${n.message}</div>
+                        <div class="timestamp">${new Date(n.timestamp).toLocaleString()}</div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                list.innerHTML = '<p style="color:#e53e3e;text-align:center;">Could not load notification history.</p>';
+            }
+        }
+
+        document.getElementById('emailForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const statusEl = document.getElementById('emailStatus');
+            const btn = e.target.querySelector('button');
+            btn.disabled = true;
+            statusEl.className = 'status-msg';
+
+            const body = {
+                toEmail: document.getElementById('toEmail').value,
+                subject: document.getElementById('subject').value,
+                body: document.getElementById('emailBody').value
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}/email`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
+                    body: JSON.stringify(body)
+                });
+                if (res.ok) {
+                    statusEl.textContent = 'Email sent successfully!';
+                    statusEl.className = 'status-msg success';
+                    e.target.reset();
+                    loadHistory();
+                } else {
+                    throw new Error();
+                }
+            } catch {
+                statusEl.textContent = 'Failed to send email. Please try again.';
+                statusEl.className = 'status-msg error';
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('smsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const statusEl = document.getElementById('smsStatus');
+            const btn = e.target.querySelector('button');
+            btn.disabled = true;
+            statusEl.className = 'status-msg';
+
+            const body = {
+                phoneNumber: document.getElementById('phoneNumber').value,
+                message: document.getElementById('smsMessage').value
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}/sms`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
+                    body: JSON.stringify(body)
+                });
+                if (res.ok) {
+                    statusEl.textContent = 'SMS sent successfully!';
+                    statusEl.className = 'status-msg success';
+                    e.target.reset();
+                    loadHistory();
+                } else {
+                    throw new Error();
+                }
+            } catch {
+                statusEl.textContent = 'Failed to send SMS. Please try again.';
+                statusEl.className = 'status-msg error';
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        });
+
+        window.addEventListener('DOMContentLoaded', loadHistory);
+    </script>
+</body>
+</html>
