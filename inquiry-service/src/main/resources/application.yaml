@@ -1,3 +1,9 @@
+server:
+  port: 8084 # වෙනත් සේවාවන් සමග ගැටෙන්නේ නැති port එකක්
+
 spring:
   application:
     name: inquiry-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/real_estate_inquiry_db

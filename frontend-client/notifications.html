@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications - Dream Estates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #060f26; color: #fff; min-height: 100vh; }
+        nav { width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: #0b1221; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-size: 24px; font-weight: 700; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: #ccc; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-links a.active, .nav-links a:hover { color: #ffd700; }
+        .logout-nav-btn { padding: 8px 20px; background: transparent; color: #e53e3e; border: 1px solid #e53e3e; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        
+        .container { padding: 40px 50px; max-width: 950px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
+        .card { background: #0b1221; padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .section-title { font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; border-left: 3px solid #1877f2; padding-left: 15px; }
+        
+        .inbox-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
+        .inbox-tabs { display: flex; gap: 10px; }
+        .tab-btn { padding: 10px 20px; background: #111b33; color: #a8b2d1; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; text-transform: uppercase; }
+        .tab-btn.active { background: #1877f2; color: #fff; }
+        
+        .filter-select { padding: 9px 15px; background: #111b33; color: #fff; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px; outline: none; cursor: pointer; }
+
+        .msg-list { display: flex; flex-direction: column; max-height: 500px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; }
+        .msg-item { display: flex; align-items: center; gap: 15px; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: background 0.2s; }
+        .msg-item:last-child { border-bottom: none; }
+        .msg-item:hover { background: #111b33; }
+        .msg-item.unread { background: rgba(24,119,242,0.12); }
+        .msg-item.unread .sender-name, .msg-item.unread .subject-text { font-weight: 700; color: #fff; }
+        .msg-item .badge { flex-shrink: 0; }
+        .msg-item .msg-main { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; }
+        .msg-item .sender-name { font-size: 14px; color: #a8b2d1; width: 160px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .msg-item .subject-preview { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; color: #8892b0; }
+        .msg-item .subject-text { color: #fff; }
+        .msg-item .msg-date { flex-shrink: 0; font-size: 12px; color: #6b7280; width: 80px; text-align: right; }
+
+        .badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 5px; text-transform: uppercase; }
+        .badge.EMAIL { background: rgba(24,119,242,0.15); color: #1877f2; }
+        .badge.SMS { background: rgba(255,215,0,0.15); color: #ffd700; }
+        
+        .detail-view { display: none; }
+        .detail-view.active { display: block; }
+        .back-link { color: #1877f2; cursor: pointer; font-size: 13px; margin-bottom: 15px; display: inline-block; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 6px; color: #a8b2d1; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group input, .input-group textarea { width: 100%; padding: 12px 16px; border: 1px solid #1f2937; border-radius: 10px; font-size: 14px; background: #111b33; color: #fff; font-family: inherit; }
+        .input-group textarea { resize: vertical; min-height: 80px; }
+        
+        .btn { padding: 12px 20px; background: #1877f2; color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .btn.danger { background: #d32f2f; }
+        .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+        
+        .status-msg { margin-top: 12px; padding: 10px; border-radius: 8px; font-size: 13px; display: none; }
+        .status-msg.success { background: rgba(52,168,83,0.1); color: #34a853; border: 1px solid #34a853; display: block; }
+        .status-msg.error { background: rgba(211,47,47,0.1); color: #d32f2f; border: 1px solid #d32f2f; display: block; }
+
+        .bottom-action-bar { display: flex; justify-content: flex-end; margin-top: 10px; }
+        .compose-btn { padding: 14px 28px; background: #1877f2; color: #fff; border: none; border-radius: 30px; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(24,119,242,0.4); display: flex; align-items: center; gap: 8px; transition: transform 0.2s; }
+        .compose-btn:hover { transform: translateY(-2px); }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: #0b1221; padding: 30px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 600px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 20px; right: 25px; font-size: 24px; cursor: pointer; color: #a8b2d1; }
+        .close-modal:hover { color: #fff; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">DREAM ESTATES</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="properties.html">Explore Properties</a>
+            <a href="my-properties.html">My Dashboard</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
+            <a href="notifications.html" class="nav-icon-btn" title="Notifications" style="color: #ffd700; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </a>
+            <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- INBOX CONTAINER -->
+        <div class="card">
+            <div class="section-title">Inbox</div>
+            
+            <div class="inbox-header">
+                <div class="inbox-tabs">
+                    <button class="tab-btn active" id="receivedTabBtn" onclick="switchInboxTab('received')">Received</button>
+                    <button class="tab-btn" id="sentTabBtn" onclick="switchInboxTab('sent')">Sent</button>
+                </div>
+                <div>
+                    <select class="filter-select" id="dateFilter" onchange="renderList()">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">Last 7 Days</option>
+                        <option value="month">Last Month</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div id="listView">
+                <div class="msg-list" id="msgList">
+                    <p style="color:#a8b2d1;text-align:center;padding:20px;">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Detail View -->
+            <div id="detailView" class="detail-view">
+                <span class="back-link" onclick="closeDetail()">&larr; Back to list</span>
+                <div id="detailContent"></div>
+            </div>
+        </div>
+
+        <!-- Action Button for Popup -->
+        <div class="bottom-action-bar">
+            <button class="compose-btn" onclick="openSendModal()">
+                <span>+</span> Send Mails / SMS
+            </button>
+        </div>
+    </div>
+
+    <!-- POPUP MODAL CONTAINER -->
+    <div class="modal-overlay" id="sendModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeSendModal()">&times;</span>
+            <div class="section-title">Send Notification</div>
+            
+            <div class="inbox-tabs" style="margin-bottom: 20px;">
+                <button class="tab-btn active" id="emailTabBtn" onclick="switchSendTab('email')">Email</button>
+                <button class="tab-btn" id="smsTabBtn" onclick="switchSendTab('sms')">SMS</button>
+            </div>
+
+            <form id="emailForm">
+                <div class="input-group"><label>Your Email (Sender)</label><input type="email" id="senderEmailInput" readonly required></div>
+                <div class="input-group"><label>Recipient Email</label><input type="email" id="toEmail" required></div>
+                <div class="input-group"><label>Subject</label><input type="text" id="subject" required></div>
+                <div class="input-group"><label>Message</label><textarea id="emailBody" required></textarea></div>
+                <button type="submit" class="btn">Send Email</button>
+                <div class="status-msg" id="emailStatus"></div>
+            </form>
+
+            <form id="smsForm" style="display:none;">
+                <div class="input-group"><label>Your Email (Sender)</label><input type="email" id="senderEmailSms" readonly required></div>
+                <div class="input-group"><label>Recipient Phone</label><input type="text" id="phoneNumber" placeholder="+947XXXXXXXX" required></div>
+                <div class="input-group"><label>Message</label><textarea id="smsMessage" required></textarea></div>
+                <button type="submit" class="btn">Send SMS</button>
+                <div class="status-msg" id="smsStatus"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8084/api/notify';
+        const API_KEY = 'notify-service-secret-key-123';
+        
+        const myEmail = localStorage.getItem('userEmail') || 'kaushbasnayake@gmail.com';
+        
+        let currentInboxTab = 'received';
+        let currentMessages = [];
+
+        window.onload = function() {
+            document.getElementById('senderEmailInput').value = myEmail;
+            document.getElementById('senderEmailSms').value = myEmail;
+            loadInbox();
+        };
+
+        function switchSendTab(tab) {
+            document.getElementById('emailForm').style.display = tab === 'email' ? 'block' : 'none';
+            document.getElementById('smsForm').style.display = tab === 'sms' ? 'block' : 'none';
+            document.getElementById('emailTabBtn').classList.toggle('active', tab === 'email');
+            document.getElementById('smsTabBtn').classList.toggle('active', tab === 'sms');
+        }
+
+        function switchInboxTab(tab) {
+            currentInboxTab = tab;
+            document.getElementById('receivedTabBtn').classList.toggle('active', tab === 'received');
+            document.getElementById('sentTabBtn').classList.toggle('active', tab === 'sent');
+            loadInbox();
+        }
+
+        function openSendModal() {
+            document.getElementById('sendModal').classList.add('active');
+        }
+
+        function closeSendModal() {
+            document.getElementById('sendModal').classList.remove('active');
+            document.getElementById('emailStatus').className = 'status-msg';
+            document.getElementById('smsStatus').className = 'status-msg';
+        }
+
+        async function loadInbox() {
+            const list = document.getElementById('msgList');
+            list.innerHTML = '<p style="color:#a8b2d1;text-align:center;padding:20px;">Loading...</p>';
+            try {
+                const url = currentInboxTab === 'received'
+                    ? `${API_BASE}/inbox/received/${encodeURIComponent(myEmail)}`
+                    : `${API_BASE}/inbox/sent/${encodeURIComponent(myEmail)}`;
+                const res = await fetch(url, { headers: { 'X-API-KEY': API_KEY } });
+                if (!res.ok) throw new Error();
+                currentMessages = await res.json();
+                renderList();
+            } catch {
+                list.innerHTML = '<p style="color:#e53e3e;text-align:center;padding:20px;">Could not load inbox.</p>';
+            }
+        }
+
+        function renderList() {
+            const list = document.getElementById('msgList');
+            const filterValue = document.getElementById('dateFilter').value;
+            const now = new Date();
+
+            const filteredMessages = currentMessages.filter(n => {
+                const msgDate = new Date(n.timestamp);
+                if (filterValue === 'today') {
+                    return msgDate.toDateString() === now.toDateString();
+                } else if (filterValue === 'week') {
+                    const sevenDaysAgo = new Date();
+                    sevenDaysAgo.setDate(now.getDate() - 7);
+                    return msgDate >= sevenDaysAgo;
+                } else if (filterValue === 'month') {
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(now.getDate() - 30);
+                    return msgDate >= thirtyDaysAgo;
+                }
+                return true;
+            });
+
+            if (filteredMessages.length === 0) {
+                list.innerHTML = '<p style="color:#a8b2d1;text-align:center;padding:20px;">No messages found.</p>';
+                return;
+            }
+
+            list.innerHTML = filteredMessages.map((n, idx) => `
+                <div class="msg-item ${!n.read && currentInboxTab === 'received' ? 'unread' : ''}" onclick="openDetail(${currentMessages.indexOf(n)})">
+                    <span class="badge ${n.type}">${n.type}</span>
+                    <div class="msg-main">
+                        <span class="sender-name">${currentInboxTab === 'received' ? (n.senderEmail || 'Unknown') : n.recipient}</span>
+                        <span class="subject-preview"><span class="subject-text">${n.subject || '(No subject)'}</span> — ${n.message}</span>
+                    </div>
+                    <span class="msg-date">${new Date(n.timestamp).toLocaleDateString()}</span>
+                </div>
+            `).join('');
+        }
+
+        async function openDetail(idx) {
+            const n = currentMessages[idx];
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('detailView').classList.add('active');
+
+            if (currentInboxTab === 'received' && !n.read) {
+                try {
+                    await fetch(`${API_BASE}/${n.id}/read`, { method: 'PUT', headers: { 'X-API-KEY': API_KEY } });
+                    n.read = true;
+                } catch {}
+            }
+
+            const detail = document.getElementById('detailContent');
+            detail.innerHTML = `
+                <div class="input-group"><label>${currentInboxTab === 'received' ? 'From' : 'To'}</label>
+                    <p style="color:#fff;">${currentInboxTab === 'received' ? (n.senderEmail || 'Unknown') : n.recipient}</p></div>
+                <div class="input-group"><label>Subject</label><p style="color:#fff;">${n.subject || '(No subject)'}</p></div>
+                <div class="input-group"><label>Message</label><p style="color:#fff; background:#111b33; padding:12px; border-radius:8px;">${n.message}</p></div>
+                <div class="input-group"><label>Sent Time</label><p style="color:#a8b2d1; font-size:12px;">${new Date(n.timestamp).toLocaleString()}</p></div>
+
+                ${currentInboxTab === 'received' ? `
+                <div class="input-group">
+                    <label>Reply Message</label>
+                    <textarea id="replyMessage" placeholder="Write your reply..."></textarea>
+                </div>
+                <div class="btn-row">
+                    <button class="btn" onclick="sendReply('${n.id}')">Send Reply</button>
+                    <button class="btn danger" onclick="deleteMessage('${n.id}')">Delete Message</button>
+                </div>` : `
+                <div class="btn-row">
+                    <button class="btn danger" onclick="deleteMessage('${n.id}')">Delete Message</button>
+                </div>`}
+                <div class="status-msg" id="detailStatus"></div>
+            `;
+        }
+
+        function closeDetail() {
+            document.getElementById('listView').style.display = 'block';
+            document.getElementById('detailView').classList.remove('active');
+            loadInbox();
+        }
+
+        async function sendReply(id) {
+            const message = document.getElementById('replyMessage').value.trim();
+            const statusEl = document.getElementById('detailStatus');
+            if (!message) {
+                alert('Please enter a reply message.');
+                return;
+            }
+            try {
+                const res = await fetch(`${API_BASE}/${id}/reply`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
+                    body: JSON.stringify({ senderEmail: myEmail, message })
+                });
+                if (!res.ok) throw new Error();
+                statusEl.textContent = 'Reply sent successfully!';
+                statusEl.className = 'status-msg success';
+                setTimeout(closeDetail, 1000);
+            } catch {
+                statusEl.textContent = 'Failed to send reply.';
+                statusEl.className = 'status-msg error';
+            }
+        }
+
+        async function deleteMessage(id) {
+            if (!confirm('Are you sure you want to delete this message?')) return;
+            try {
+                await fetch(`${API_BASE}/${id}`, { method: 'DELETE', headers: { 'X-API-KEY': API_KEY } });
+                closeDetail();
+            } catch {
+                alert('Failed to delete message.');
+            }
+        }
+
+        document.getElementById('emailForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const statusEl = document.getElementById('emailStatus');
+            const body = {
+                senderEmail: myEmail,
+                toEmail: document.getElementById('toEmail').value,
+                subject: document.getElementById('subject').value,
+                body: document.getElementById('emailBody').value
+            };
+            try {
+                const res = await fetch(`${API_BASE}/email`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
+                    body: JSON.stringify(body)
+                });
+                if (res.ok) {
+                    statusEl.textContent = 'Email sent!';
+                    statusEl.className = 'status-msg success';
+                    e.target.reset();
+                    document.getElementById('senderEmailInput').value = myEmail;
+                    setTimeout(() => {
+                        closeSendModal();
+                        loadInbox();
+                    }, 1200);
+                } else throw new Error();
+            } catch {
+                statusEl.textContent = 'Failed to send email.';
+                statusEl.className = 'status-msg error';
+            }
+        });
+
+        document.getElementById('smsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const statusEl = document.getElementById('smsStatus');
+            const body = {
+                senderEmail: myEmail,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                message: document.getElementById('smsMessage').value
+            };
+            try {
+                const res = await fetch(`${API_BASE}/sms`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
+                    body: JSON.stringify(body)
+                });
+                if (res.ok) {
+                    statusEl.textContent = 'SMS sent!';
+                    statusEl.className = 'status-msg success';
+                    e.target.reset();
+                    document.getElementById('senderEmailSms').value = myEmail;
+                    setTimeout(() => {
+                        closeSendModal();
+                        loadInbox();
+                    }, 1200);
+                } else throw new Error();
+            } catch {
+                statusEl.textContent = 'Failed to send SMS.';
+                statusEl.className = 'status-msg error';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

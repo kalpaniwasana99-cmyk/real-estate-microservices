@@ -31,12 +31,11 @@ spring:
                 redis-rate-limiter.replenishRate: 10
                 redis-rate-limiter.burstCapacity: 20
 
-        - id: property-service
-          uri: http://localhost:8082
+
+        - id: notification-service
+          uri: http://localhost:8084
           predicates:
-            - Path=/api/properties/**
-          filters:
-            - AddRequestHeader=X-API-KEY, my-super-secret-property-api-key
+
 
   data:
     redis:

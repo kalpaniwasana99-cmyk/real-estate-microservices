@@ -11,7 +11,7 @@
         
         nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(11, 18, 33, 0.9); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-size: 24px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 10px; }
-        .nav-links { display: flex; gap: 30px; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
         .nav-links a { color: #cccccc; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         .nav-links a.active, .nav-links a:hover { color: #ffd700; }
         
@@ -84,8 +84,18 @@
             <a href="my-properties.html">My Dashboard</a>
             <a href="profile.html">Profile</a>
         </div>
-        <!-- Trigger Button -->
-        <button id="openLoginBtnNav" class="btn-nav">LOGIN TO PORTAL</button>
+        
+        <!-- Right side containing Envelope Icon and Button -->
+        <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
+            <a href="notifications.html" style="display:flex; align-items:center; color: #ffd700; text-decoration: none;" title="Notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </a>
+            <!-- Trigger Button -->
+            <button id="openLoginBtnNav" class="btn-nav">LOGIN TO PORTAL</button>
+        </div>
     </nav>
 
     <section class="hero">
