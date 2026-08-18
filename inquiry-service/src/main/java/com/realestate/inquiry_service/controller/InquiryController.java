@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inquiries")
+@CrossOrigin(origins = "*") // CORS Error එක මඟහරවා ගැනීමට මෙය අත්‍යවශ්‍යයි
 public class InquiryController {
 
     @Autowired
@@ -30,9 +31,9 @@ public class InquiryController {
         return new ResponseEntity<>(inquiries, HttpStatus.OK);
     }
 
-    // 3. By Property ID - අදාළ Property එකට අදාළ Inquiries පමණක් ලබා ගැනීම
+    // 3. By Property ID - අදාළ Property එකට අදාළ Inquiries ලබා ගැනීම (String ලෙස නිවැරදි කරන ලදී)
     @GetMapping("/property/{propertyId}")
-    public ResponseEntity<List<Inquiry>> getInquiriesByPropertyId(@PathVariable Long propertyId) {
+    public ResponseEntity<List<Inquiry>> getInquiriesByPropertyId(@PathVariable String propertyId) {
         List<Inquiry> inquiries = inquiryRepository.findByPropertyId(propertyId);
         return new ResponseEntity<>(inquiries, HttpStatus.OK);
     }
