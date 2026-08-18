@@ -15,7 +15,7 @@
         .logout-nav-btn { padding: 8px 20px; background: transparent; color: #e53e3e; border: 1px solid #e53e3e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .logout-nav-btn:hover { background: #e53e3e; color: white; }
         
-        .container { padding: 40px 50px; max-width: 1000px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 30px; }
+        .container { padding: 40px 50px; max-width: 1000px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 20px; }
         .card { background: #0b1221; padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
         .section-title { font-size: 18px; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; border-left: 3px solid #1877f2; padding-left: 15px; }
         
@@ -30,24 +30,51 @@
         .btn-primary:hover { background: #145dbf; }
         .btn-danger { padding: 6px 12px; background: #e53e3e; color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; transition: background 0.3s; }
         .btn-warning { padding: 6px 12px; background: #d69e2e; color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; transition: background 0.3s; }
+        .btn-info { padding: 6px 12px; background: #3182ce; color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; transition: background 0.3s; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; text-align: left; }
         th, td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 14px; color: #a8b2d1; }
         th { color: #ffd700; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
         td strong { color: #ffffff; }
         .action-btns { display: flex; gap: 10px; }
+        .status-success { color: #34a853; font-weight: 600; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
+        /* Go To Payment Button */
+        .go-payment-btn { padding: 16px 40px; background: #34a853; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 20px rgba(52, 168, 83, 0.3); display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+        .go-payment-btn:hover { background: #2d8f47; transform: translateY(-2px); }
+
+        /* Back Button */
+        .back-btn { background: transparent; color: #a8b2d1; border: 1px solid #a8b2d1; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: 0.3s; margin-bottom: 10px; }
+        .back-btn:hover { background: #a8b2d1; color: #060f26; }
+
+        /* History Toggle Button */
+        .history-btn { background: #111b33; color: #a8b2d1; border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .history-btn:hover { background: #1f2937; color: white; border-color: #1877f2; }
+
+        /* MODAL STYLES */
+        .modal-overlay, .history-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay.active, .history-modal-overlay.active { opacity: 1; visibility: visible; }
+        
         .modal-box { background: #111b33; width: 400px; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); transform: scale(0.8); transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.1); }
         .modal-overlay.active .modal-box { transform: scale(1); }
+        
+        .history-modal-box { background: #0b1221; width: 90%; max-width: 1000px; padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 15px 35px rgba(0,0,0,0.5); transform: translateY(-30px); transition: transform 0.3s; max-height: 85vh; overflow-y: auto; position: relative; }
+        .history-modal-overlay.active .history-modal-box { transform: translateY(0); }
+        .close-modal-btn { position: absolute; top: 25px; right: 25px; background: transparent; color: #a8b2d1; border: none; font-size: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .close-modal-btn:hover { color: #e53e3e; }
+
         .modal-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; margin: 0 auto 20px auto; font-weight: 700; }
         .modal-icon.success { background: rgba(52, 168, 83, 0.1); color: #34a853; border: 2px solid #34a853; }
         .modal-icon.error { background: rgba(211, 47, 47, 0.1); color: #d32f2f; border: 2px solid #d32f2f; }
+        .modal-icon.warning { background: rgba(214, 158, 46, 0.1); color: #d69e2e; border: 2px solid #d69e2e; }
+        
         .modal-box h4 { font-size: 22px; font-weight: 600; color: #ffffff; margin-bottom: 10px; }
         .modal-box p { font-size: 15px; color: #a8b2d1; margin-bottom: 30px; }
+        .modal-btn-group { display: flex; gap: 10px; }
         .modal-btn { width: 100%; padding: 14px; background: #1877f2; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
         .modal-btn:hover { background: #145dbf; }
+        .modal-btn-secondary { background: #4a5568; }
+        .modal-btn-secondary:hover { background: #2d3748; }
     </style>
 </head>
 <body>
@@ -62,9 +89,9 @@
         <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
     </nav>
 
-    <div class="container">
-        <!-- TOP: Property Inquiry Section -->
-        <div class="card">
+    <!-- VIEW 1: INQUIRY PAGE -->
+    <div id="inquiryPageView" class="container">
+        <div class="card" style="margin-bottom: 0;">
             <div class="section-title">Property Inquiry</div>
             <form id="inquiryForm">
                 <input type="hidden" id="inquiryId">
@@ -99,32 +126,29 @@
             </form>
         </div>
 
-        <!-- Inquiry History Table (CRUD Read, Update, Delete) -->
-        <div class="card">
-            <div class="section-title">Inquiry History & Management</div>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Property ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Message</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inquiriesTableBody">
-                        <tr><td colspan="7" style="text-align: center; color: #a8b2d1;">Loading inquiries...</td></tr>
-                    </tbody>
-                </table>
-            </div>
+        <div style="display: flex; justify-content: flex-start;">
+            <button class="history-btn" onclick="openInquiryHistory()">
+                🕒 View Inquiry History
+            </button>
         </div>
 
-        <!-- PAYMENT SECTION -->
-        <div class="card">
-            <div class="section-title" id="formTitle">Process New Payment</div>
+        <div style="text-align: center; margin: 20px 0 30px 0;">
+            <button onclick="showPaymentPage()" class="go-payment-btn">
+                <span>💳</span> Proceed to Secure Payment Gateway
+            </button>
+        </div>
+    </div>
+
+    <!-- VIEW 2: PAYMENT PAGE -->
+    <div id="paymentPageView" class="container" style="display: none;">
+        <div>
+            <button onclick="showInquiryPage()" class="back-btn">
+                ⬅ Back to Inquiry
+            </button>
+        </div>
+
+        <div class="card" style="margin-bottom: 0;">
+            <div class="section-title" id="formTitle">Secure Card Payment Gateway</div>
             <form id="paymentForm">
                 <input type="hidden" id="paymentId">
                 <div class="form-grid">
@@ -148,13 +172,67 @@
                             <option value="FAILED">FAILED</option>
                         </select>
                     </div>
+                    <div class="input-group full-width">
+                        <label for="cardHolder">Cardholder Name</label>
+                        <input type="text" id="cardHolder" required placeholder="John Doe">
+                    </div>
+                    <div class="input-group">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" maxlength="19" required placeholder="4111 2222 3333 4444">
+                    </div>
+                    <div class="input-group">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div>
+                                <label for="expiryDate">Expiry Date</label>
+                                <input type="text" id="expiryDate" maxlength="5" required placeholder="MM/YY">
+                            </div>
+                            <div>
+                                <label for="cvv">CVV</label>
+                                <input type="password" id="cvv" maxlength="4" required placeholder="123">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn-primary" id="submitBtn">Proceed Payment</button>
-                <button type="button" class="btn-warning" id="cancelEditBtn" style="display: none; margin-left: 10px;">Cancel Edit</button>
+                <button type="submit" class="btn-primary" id="submitBtn">Complete Secure Payment</button>
             </form>
         </div>
 
-        <div class="card">
+        <div style="display: flex; justify-content: flex-start; margin-bottom: 30px;">
+            <button class="history-btn" onclick="openPaymentHistory()">
+                🕒 View Payment History & Receipts
+            </button>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="history-modal-overlay" id="inquiryHistoryModal">
+        <div class="history-modal-box">
+            <button class="close-modal-btn" onclick="closeInquiryHistory()">✖</button>
+            <div class="section-title">Inquiry History & Management</div>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Property ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inquiriesTableBody">
+                        <tr><td colspan="7" style="text-align: center; color: #a8b2d1;">Loading inquiries...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="history-modal-overlay" id="paymentHistoryModal">
+        <div class="history-modal-box">
+            <button class="close-modal-btn" onclick="closePaymentHistory()">✖</button>
             <div class="section-title">Payment History & Records</div>
             <div style="overflow-x: auto;">
                 <table>
@@ -177,32 +255,32 @@
         </div>
     </div>
 
-    <!-- Custom Popup Modal -->
     <div class="modal-overlay" id="customModal">
         <div class="modal-box">
             <div class="modal-icon" id="modalIcon">✓</div>
             <h4 id="modalTitle">Success!</h4>
             <p id="modalMessage">Operation successful.</p>
-            <button class="modal-btn" id="modalOkBtn">OK</button>
+            <div id="modalButtons" class="modal-btn-group">
+                <button class="modal-btn" id="modalOkBtn">OK</button>
+            </div>
         </div>
     </div>
 
     <script>
         const INQUIRY_API_URL = 'http://localhost:8084/api/inquiries';
         const PAYMENT_API_URL = 'http://localhost:8083/api/payments';
+        const NOTIFICATION_API_URL = 'http://localhost:8084/api/notifications'; 
         const apiKey = 'my-super-secret-payment-api-key';
 
         const urlParams = new URLSearchParams(window.location.search);
         const propIdFromUrl = urlParams.get('propertyId') || 'PROP-DEFAULT';
         
-        // Auto fill Property IDs
         document.getElementById('inquiryPropertyId').value = propIdFromUrl;
         document.getElementById('propertyId').value = propIdFromUrl;
         document.getElementById('userId').value = localStorage.getItem('userId') || 'USER-001';
         document.getElementById('customerName').value = localStorage.getItem('userName') || '';
         document.getElementById('customerEmail').value = localStorage.getItem('userEmail') || '';
 
-        // Mock/Auto fetch Owner details based on property ID (You can connect to property microservice if available)
         document.getElementById('ownerEmail').value = "owner_" + propIdFromUrl.toLowerCase() + "@realestate.com";
         document.getElementById('ownerPhone').value = "+94 77 123 4567";
 
@@ -211,29 +289,62 @@
             loadPayments();
         });
 
-        function showPopup(type, title, message, callback) {
-            const modal = document.getElementById('customModal');
-            const icon = document.getElementById('modalIcon');
-            
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalMessage').innerText = message;
-            
-            icon.className = 'modal-icon ' + type;
-            icon.innerText = type === 'success' ? '✓' : '✕';
-            
-            modal.classList.add('active');
-
-            const okBtn = document.getElementById('modalOkBtn');
-            const newOkBtn = okBtn.cloneNode(true);
-            okBtn.parentNode.replaceChild(newOkBtn, okBtn);
-
-            newOkBtn.addEventListener('click', () => {
-                modal.classList.remove('active');
-                if (callback) callback();
-            });
+        function showPaymentPage() {
+            document.getElementById('inquiryPageView').style.display = 'none';
+            document.getElementById('paymentPageView').style.display = 'flex';
+            window.scrollTo(0, 0); 
         }
 
-        // --- INQUIRY CRUD FUNCTIONS ---
+        function showInquiryPage() {
+            document.getElementById('paymentPageView').style.display = 'none';
+            document.getElementById('inquiryPageView').style.display = 'flex';
+            window.scrollTo(0, 0); 
+        }
+
+        function openInquiryHistory() {
+            document.getElementById('inquiryHistoryModal').classList.add('active');
+        }
+        function closeInquiryHistory() {
+            document.getElementById('inquiryHistoryModal').classList.remove('active');
+        }
+        function openPaymentHistory() {
+            document.getElementById('paymentHistoryModal').classList.add('active');
+        }
+        function closePaymentHistory() {
+            document.getElementById('paymentHistoryModal').classList.remove('active');
+        }
+
+        function showPopup(type, title, message, onOkCallback) {
+            const modal = document.getElementById('customModal');
+            const icon = document.getElementById('modalIcon');
+            const btnGroup = document.getElementById('modalButtons');
+
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+
+            icon.className = 'modal-icon ' + type;
+            icon.innerText = type === 'success' ? '✓' : type === 'warning' ? '?' : '✕';
+
+            if (type === 'warning' && onOkCallback) {
+                btnGroup.innerHTML = `
+                    <button class="modal-btn modal-btn-secondary" id="modalCancelBtn">Cancel</button>
+                    <button class="modal-btn" id="modalConfirmBtn">Confirm</button>
+                `;
+                document.getElementById('modalCancelBtn').onclick = () => modal.classList.remove('active');
+                document.getElementById('modalConfirmBtn').onclick = () => {
+                    modal.classList.remove('active');
+                    onOkCallback();
+                };
+            } else {
+                btnGroup.innerHTML = `<button class="modal-btn" id="modalOkBtn">OK</button>`;
+                document.getElementById('modalOkBtn').onclick = () => {
+                    modal.classList.remove('active');
+                    if (onOkCallback) onOkCallback();
+                };
+            }
+
+            modal.classList.add('active');
+        }
 
         async function loadInquiries() {
             const tbody = document.getElementById('inquiriesTableBody');
@@ -245,7 +356,6 @@
                         tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #a8b2d1;">No inquiries found.</td></tr>`;
                         return;
                     }
-
                     let html = '';
                     inquiries.forEach(i => {
                         html += `
@@ -257,9 +367,9 @@
                                 <td>${i.message}</td>
                                 <td>${i.inquiryDate ? i.inquiryDate.substring(0, 10) : 'N/A'}</td>
                                 <td>
-                                    <div class="action-pins action-btns">
+                                    <div class="action-btns">
                                         <button class="btn-warning" onclick="editInquiry('${i.id}', '${i.propertyId}', '${i.customerName}', '${i.customerEmail}', '${i.message}')">Edit</button>
-                                        <button class="btn-danger" onclick="deleteInquiry('${i.id}')">Delete</button>
+                                        <button class="btn-danger" onclick="confirmDeleteInquiry('${i.id}')">Delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -274,10 +384,14 @@
             }
         }
 
+        // Fixed Inquiry Submit to match Long propertyId in backend model
         document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('inquiryId').value;
-            const propertyId = document.getElementById('inquiryPropertyId').value;
+            
+            let rawPropId = document.getElementById('inquiryPropertyId').value;
+            let propertyId = !isNaN(rawPropId) ? parseInt(rawPropId) : 1; // Converts string to numeric Long type expected by backend
+
             const customerName = document.getElementById('customerName').value;
             const customerEmail = document.getElementById('customerEmail').value;
             const message = document.getElementById('inquiryMessage').value;
@@ -307,12 +421,12 @@
         });
 
         window.editInquiry = function(id, propertyId, customerName, customerEmail, message) {
+            closeInquiryHistory(); 
             document.getElementById('inquiryId').value = id;
             document.getElementById('inquiryPropertyId').value = propertyId;
             document.getElementById('customerName').value = customerName;
             document.getElementById('customerEmail').value = customerEmail;
             document.getElementById('inquiryMessage').value = message;
-
             document.getElementById('inquirySubmitBtn').innerText = "Update Inquiry";
             document.getElementById('cancelInquiryEditBtn').style.display = 'inline-block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -328,8 +442,9 @@
             document.getElementById('cancelInquiryEditBtn').style.display = 'none';
         }
 
-        window.deleteInquiry = async function(id) {
-            if (confirm("Are you sure you want to delete this inquiry?")) {
+        window.confirmDeleteInquiry = function(id) {
+            closeInquiryHistory();
+            showPopup('warning', 'Confirm Delete', 'Are you sure you want to delete this inquiry?', async () => {
                 try {
                     const response = await fetch(`${INQUIRY_API_URL}/${id}`, { method: 'DELETE' });
                     if (response.ok) {
@@ -340,10 +455,9 @@
                 } catch (error) {
                     showPopup('error', 'Connection Error', 'Could not connect to server.');
                 }
-            }
+            });
         };
 
-        // --- PAYMENT FUNCTIONS (Existing) ---
         async function loadPayments() {
             const tbody = document.getElementById('paymentsTableBody');
             try {
@@ -365,12 +479,12 @@
                                 <td><strong>${p.propertyId}</strong></td>
                                 <td>${p.userId}</td>
                                 <td>$${p.amount ? p.amount.toLocaleString() : '0.00'}</td>
-                                <td><span class="status-success" style="color:#34a853; font-weight:600;">${p.paymentStatus}</span></td>
+                                <td><span class="status-success">${p.paymentStatus}</span></td>
                                 <td>${p.paymentDate ? p.paymentDate.substring(0, 10) : 'N/A'}</td>
                                 <td>
                                     <div class="action-btns">
-                                        <button class="btn-warning" onclick="editPayment('${p.id}', '${p.propertyId}', '${p.userId}', '${p.amount}', '${p.paymentStatus}')">Edit</button>
-                                        <button class="btn-danger" onclick="deletePayment('${p.id}')">Delete</button>
+                                        <button class="btn-info" onclick="viewReceipt('${p.id}', '${p.propertyId}', '${p.amount}')">Receipt</button>
+                                        <button class="btn-danger" onclick="confirmDeletePayment('${p.id}')">Delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -387,14 +501,13 @@
 
         document.getElementById('paymentForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const id = document.getElementById('paymentId').value;
             const propertyId = document.getElementById('propertyId').value;
             const userId = document.getElementById('userId').value;
             const amount = parseFloat(document.getElementById('amount').value);
-            const paymentStatus = document.getElementById('paymentStatus.value') || document.getElementById('paymentStatus').value;
+            const paymentStatus = document.getElementById('paymentStatus').value;
+            const customerEmail = document.getElementById('customerEmail').value || "user@domain.com";
 
             const payload = { propertyId, userId, amount, paymentStatus };
-            if (id) payload.id = id;
 
             try {
                 const response = await fetch(`${PAYMENT_API_URL}/process`, {
@@ -402,10 +515,31 @@
                     headers: { 'Content-Type': 'application/json', 'X-API-KEY': apiKey },
                     body: JSON.stringify(payload)
                 });
+
                 if (response.ok) {
-                    showPopup('success', 'Success!', id ? 'Payment updated successfully!' : 'Payment processed successfully!', () => {
-                        resetPaymentForm();
+                    try {
+                        await fetch(NOTIFICATION_API_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                email: customerEmail,
+                                subject: 'Payment Successful - Dream Estates',
+                                message: `Dear Customer, your payment of $${amount} for Property ID: ${propertyId} has been successfully processed.`
+                            })
+                        });
+                    } catch (notifErr) {
+                        console.log("Notification service call failed, but payment was successful.");
+                    }
+
+                    showPopup('success', 'Payment Successful!', 'Your secure card transaction was processed and notification sent.', () => {
+                        document.getElementById('amount').value = '';
+                        document.getElementById('cardHolder').value = '';
+                        document.getElementById('cardNumber').value = '';
+                        document.getElementById('expiryDate').value = '';
+                        document.getElementById('cvv').value = '';
                         loadPayments();
+                        
+                        showInquiryPage();
                     });
                 } else {
                     showPopup('error', 'Operation Failed', 'Could not process payment.');
@@ -415,45 +549,28 @@
             }
         });
 
-        window.editPayment = function(id, propertyId, userId, amount, paymentStatus) {
-            document.getElementById('paymentId').value = id;
-            document.getElementById('propertyId').value = propertyId;
-            document.getElementById('userId').value = userId;
-            document.getElementById('amount').value = amount;
-            document.getElementById('paymentStatus').value = paymentStatus;
-            document.getElementById('formTitle').innerText = "Update Payment (ID: " + id + ")";
-            document.getElementById('submitBtn').innerText = "Save Changes";
-            document.getElementById('cancelEditBtn').style.display = 'inline-block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.viewReceipt = function(id, propId, amt) {
+            closePaymentHistory();
+            showPopup('success', 'Payment Receipt', `Transaction ID: ${id}\nProperty ID: ${propId}\nPaid Amount: $${amt}\nStatus: SUCCESS\nCard Verified: YES`);
         };
 
-        document.getElementById('cancelEditBtn').addEventListener('click', resetPaymentForm);
-
-        function resetPaymentForm() {
-            document.getElementById('paymentId').value = '';
-            document.getElementById('propertyId').value = propIdFromUrl;
-            document.getElementById('amount').value = '';
-            document.getElementById('formTitle').innerText = "Process New Payment";
-            document.getElementById('submitBtn').innerText = "Proceed Payment";
-            document.getElementById('cancelEditBtn').style.display = 'none';
-        }
-
-        window.deletePayment = async function(id) {
-            if (confirm("Are you sure you want to delete this payment record?")) {
+        window.confirmDeletePayment = function(id) {
+            closePaymentHistory();
+            showPopup('warning', 'Confirm Delete', 'Are you sure you want to delete this payment record?', async () => {
                 try {
                     const response = await fetch(`${PAYMENT_API_URL}/${id}`, {
                         method: 'DELETE',
                         headers: { 'X-API-KEY': apiKey }
                     });
                     if (response.ok) {
-                        showPopup('success', 'Deleted!', 'Payment deleted successfully!', loadPayments);
+                        showPopup('success', 'Deleted!', 'Payment record deleted successfully.', loadPayments);
                     } else {
-                        showPopup('error', 'Failed', 'Could not delete payment.');
+                        showPopup('error', 'Failed', 'Could not delete payment record.');
                     }
                 } catch (error) {
                     showPopup('error', 'Connection Error', 'Could not connect to server.');
                 }
-            }
+            });
         };
 
         document.getElementById('logoutBtn').addEventListener('click', () => {

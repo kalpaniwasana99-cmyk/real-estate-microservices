@@ -15,7 +15,7 @@
     <description>Inquiry Service for Real Estate</description>
     
     <properties>
-        <java.version>26</java.version>
+        <java.version>17</java.version>
     </properties>
     
     <dependencies>
