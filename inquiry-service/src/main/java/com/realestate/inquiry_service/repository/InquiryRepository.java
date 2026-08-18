@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface InquiryRepository extends MongoRepository<Inquiry, String> {
-
-    // නිශ්චිත Property ID එකකට අදාළ සියලුම විමසීම් (Inquiries) සෙවීම සඳහා
     List<Inquiry> findByPropertyId(String propertyId);
 }

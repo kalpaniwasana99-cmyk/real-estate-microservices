@@ -1,23 +1,18 @@
 package com.realestate.notification_service.dto;
 
-public class SmsRequestDto {
-    private String senderEmail;
-    private String phoneNumber;
+public class ReplyRequestDto {
+    private String senderEmail;    
     private String message;
 
-    public SmsRequestDto() {}
+    public ReplyRequestDto() {}
 
-    public SmsRequestDto(String senderEmail, String phoneNumber, String message) {
+    public ReplyRequestDto(String senderEmail, String message) {
         this.senderEmail = senderEmail;
-        this.phoneNumber = phoneNumber;
         this.message = message;
     }
 
     public String getSenderEmail() { return senderEmail; }
     public void setSenderEmail(String senderEmail) { this.senderEmail = senderEmail; }
-
-    public String getPhoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }

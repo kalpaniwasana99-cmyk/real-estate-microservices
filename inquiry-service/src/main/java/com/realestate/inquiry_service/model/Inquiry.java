@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 public class Inquiry {
 
     @Id
-    private String id; // MongoDB සඳහා ID එක String බවට වෙනස් කළා
+    private String id;
 
-    private Long propertyId; // Hasindu ගේ Property Service එකේ අදාළ දේපළේ ID එක (ඒක Long නිසා වෙනස් කළේ නෑ)
+    private String propertyId; // Long වෙනුවට String ලෙස වෙනස් කරන ලදී (Frontend එකෙන් එන IDs වලට ගැළපීමට)
 
     private String customerName;
 
@@ -18,15 +18,12 @@ public class Inquiry {
 
     private String message;
 
-    // Object එක හැදෙන වෙලාවෙම ස්වයංක්‍රීයව වෙලාව සේව් වීම සඳහා
     private LocalDateTime inquiryDate = LocalDateTime.now(); 
 
-    // Default Constructor
     public Inquiry() {
     }
 
-    // Parameterized Constructor
-    public Inquiry(Long propertyId, String customerName, String customerEmail, String message) {
+    public Inquiry(String propertyId, String customerName, String customerEmail, String message) {
         this.propertyId = propertyId;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -34,12 +31,11 @@ public class Inquiry {
         this.inquiryDate = LocalDateTime.now();
     }
 
-    // Getters and Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public Long getPropertyId() { return propertyId; }
-    public void setPropertyId(Long propertyId) { this.propertyId = propertyId; }
+    public String getPropertyId() { return propertyId; }
+    public void setPropertyId(String propertyId) { this.propertyId = propertyId; }
 
     public String getCustomerName() { return customerName; }
     public void setCustomerName(String customerName) { this.customerName = customerName; }

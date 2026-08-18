@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends MongoRepository<Notification, String> {
     List<Notification> findByRecipient(String recipient);
+    List<Notification> findByRecipientOrderByTimestampDesc(String recipient);
+    List<Notification> findBySenderEmailOrderByTimestampDesc(String senderEmail);
 }

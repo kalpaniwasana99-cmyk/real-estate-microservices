@@ -39,19 +39,15 @@
         .action-btns { display: flex; gap: 10px; }
         .status-success { color: #34a853; font-weight: 600; }
 
-        /* Go To Payment Button */
         .go-payment-btn { padding: 16px 40px; background: #34a853; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 20px rgba(52, 168, 83, 0.3); display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
         .go-payment-btn:hover { background: #2d8f47; transform: translateY(-2px); }
 
-        /* Back Button */
         .back-btn { background: transparent; color: #a8b2d1; border: 1px solid #a8b2d1; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: 0.3s; margin-bottom: 10px; }
         .back-btn:hover { background: #a8b2d1; color: #060f26; }
 
-        /* History Toggle Button */
         .history-btn { background: #111b33; color: #a8b2d1; border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
         .history-btn:hover { background: #1f2937; color: white; border-color: #1877f2; }
 
-        /* MODAL STYLES */
         .modal-overlay, .history-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active, .history-modal-overlay.active { opacity: 1; visibility: visible; }
         
@@ -84,6 +80,7 @@
             <a href="index.html">Home</a>
             <a href="properties.html">Explore Properties</a>
             <a href="my-properties.html">My Dashboard</a>
+            <a href="notifications.html">Notifications</a>
             <a href="profile.html">Profile</a>
         </div>
         <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
@@ -126,10 +123,11 @@
             </form>
         </div>
 
-        <div style="display: flex; justify-content: flex-start;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
             <button class="history-btn" onclick="openInquiryHistory()">
                 🕒 View Inquiry History
             </button>
+            <a href="notifications.html" style="color: #ffd700; font-size: 13px; text-decoration: none;">View All Notifications &rarr;</a>
         </div>
 
         <div style="text-align: center; margin: 20px 0 30px 0;">
@@ -197,10 +195,11 @@
             </form>
         </div>
 
-        <div style="display: flex; justify-content: flex-start; margin-bottom: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <button class="history-btn" onclick="openPaymentHistory()">
                 🕒 View Payment History & Receipts
             </button>
+            <a href="notifications.html" style="color: #ffd700; font-size: 13px; text-decoration: none;">View All Notifications &rarr;</a>
         </div>
     </div>
 
@@ -267,10 +266,11 @@
     </div>
 
     <script>
-        const INQUIRY_API_URL = 'http://localhost:8084/api/inquiries';
+        const INQUIRY_API_URL = 'http://localhost:8085/api/inquiries';
         const PAYMENT_API_URL = 'http://localhost:8083/api/payments';
-        const NOTIFICATION_API_URL = 'http://localhost:8084/api/notifications'; 
+        const NOTIFICATION_API_URL = 'http://localhost:8084/api/notify/email'; 
         const apiKey = 'my-super-secret-payment-api-key';
+        const notifyApiKey = 'notify-service-secret-key-123';
 
         const urlParams = new URLSearchParams(window.location.search);
         const propIdFromUrl = urlParams.get('propertyId') || 'PROP-DEFAULT';
@@ -384,23 +384,23 @@
             }
         }
 
-        // Fixed Inquiry Submit to match Long propertyId in backend model
+        // Inquiry Form Submit - Fast & Non-blocking Background Notification
         document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('inquiryId').value;
             
-            let rawPropId = document.getElementById('inquiryPropertyId').value;
-            let propertyId = !isNaN(rawPropId) ? parseInt(rawPropId) : 1; // Converts string to numeric Long type expected by backend
-
+            const propertyId = document.getElementById('inquiryPropertyId').value;
             const customerName = document.getElementById('customerName').value;
             const customerEmail = document.getElementById('customerEmail').value;
             const message = document.getElementById('inquiryMessage').value;
+            const ownerEmailVal = document.getElementById('ownerEmail').value;
 
             const payload = { propertyId, customerName, customerEmail, message };
             const method = id ? 'PUT' : 'POST';
             const url = id ? `${INQUIRY_API_URL}/${id}` : INQUIRY_API_URL;
 
             try {
+                // 1. Save Inquiry instantly without waiting for mail server response
                 const response = await fetch(url, {
                     method: method,
                     headers: { 'Content-Type': 'application/json' },
@@ -408,6 +408,21 @@
                 });
 
                 if (response.ok) {
+                    // 2. Trigger background notification to owner and save to user's received inbox
+                    fetch(NOTIFICATION_API_URL, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'X-API-KEY': notifyApiKey 
+                        },
+                        body: JSON.stringify({
+                            senderEmail: customerEmail,
+                            toEmail: ownerEmailVal,
+                            subject: 'New Property Inquiry - Dream Estates',
+                            body: `Hello Owner, you have received a new inquiry from ${customerName} (${customerEmail}) regarding Property ID: ${propertyId}. Message: "${message}"`
+                        })
+                    }).catch(err => console.log("Background notification error ignored:", err));
+
                     showPopup('success', 'Success!', id ? 'Inquiry updated successfully!' : 'Inquiry sent successfully!', () => {
                         resetInquiryForm();
                         loadInquiries();
@@ -499,13 +514,14 @@
             }
         }
 
+        // Payment Form Submit - Fast & Non-blocking Background Receipt Notification
         document.getElementById('paymentForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const propertyId = document.getElementById('propertyId').value;
             const userId = document.getElementById('userId').value;
             const amount = parseFloat(document.getElementById('amount').value);
             const paymentStatus = document.getElementById('paymentStatus').value;
-            const customerEmail = document.getElementById('customerEmail').value || "user@domain.com";
+            const customerEmail = document.getElementById('customerEmail').value || localStorage.getItem('userEmail') || "dasunniroshana8@gmail.com";
 
             const payload = { propertyId, userId, amount, paymentStatus };
 
@@ -517,21 +533,22 @@
                 });
 
                 if (response.ok) {
-                    try {
-                        await fetch(NOTIFICATION_API_URL, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                email: customerEmail,
-                                subject: 'Payment Successful - Dream Estates',
-                                message: `Dear Customer, your payment of $${amount} for Property ID: ${propertyId} has been successfully processed.`
-                            })
-                        });
-                    } catch (notifErr) {
-                        console.log("Notification service call failed, but payment was successful.");
-                    }
+                    // Send receipt notification to user's received inbox instantly in background
+                    fetch(NOTIFICATION_API_URL, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'X-API-KEY': notifyApiKey
+                        },
+                        body: JSON.stringify({
+                            senderEmail: "admin@realestate.com",
+                            toEmail: customerEmail,
+                            subject: 'Payment Receipt - Dream Estates',
+                            body: `Dear Customer, your payment of $${amount} for Property ID: ${propertyId} has been successfully processed and recorded.`
+                        })
+                    }).catch(err => console.log("Background receipt notification error ignored:", err));
 
-                    showPopup('success', 'Payment Successful!', 'Your secure card transaction was processed and notification sent.', () => {
+                    showPopup('success', 'Payment Successful!', 'Your secure card transaction was processed successfully.', () => {
                         document.getElementById('amount').value = '';
                         document.getElementById('cardHolder').value = '';
                         document.getElementById('cardNumber').value = '';
