@@ -1,6 +1,7 @@
- package com.realestate.notification_service.service;
+package com.realestate.notification_service.service;
 
 import com.realestate.notification_service.dto.EmailRequestDto;
+import com.realestate.notification_service.dto.ReplyRequestDto;
 import com.realestate.notification_service.dto.SmsRequestDto;
 import com.realestate.notification_service.entity.Notification;
 import com.realestate.notification_service.repository.NotificationRepository;
@@ -11,68 +12,125 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NotificationService {
 
-    @Autowired(required = false)
-    private JavaMailSender mailSender;
-
     @Autowired
     private NotificationRepository notificationRepository;
 
-    // Email Sending Logic
-    public Notification sendEmail(EmailRequestDto emailRequest) {
+    @Autowired
+    private JavaMailSender mailSender;
+
+    public Notification sendEmail(EmailRequestDto request) {
+        String status = "SENT";
+        try {
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setFrom(request.getSenderEmail());
+            mail.setTo(request.getToEmail());
+            mail.setSubject(request.getSubject());
+            mail.setText(request.getBody());
+            mailSender.send(mail);
+        } catch (Exception e) {
+            status = "FAILED";
+        }
+
         Notification notification = Notification.builder()
-                .recipient(emailRequest.getToEmail())
-                .subject(emailRequest.getSubject())
-                .message(emailRequest.getBody())
+                .senderEmail(request.getSenderEmail())
+                .recipient(request.getToEmail())
+                .subject(request.getSubject())
+                .message(request.getBody())
                 .type("EMAIL")
+                .status(status)
+                .read(false)
                 .timestamp(LocalDateTime.now())
                 .build();
-
-        try {
-            if (mailSender != null) {
-                SimpleMailMessage message = new SimpleMailMessage();
-                message.setTo(emailRequest.getToEmail());
-                message.setSubject(emailRequest.getSubject());
-                message.setText(emailRequest.getBody());
-                mailSender.send(message);
-            }
-            notification.setStatus("SENT");
-        } catch (Exception e) {
-            notification.setStatus("FAILED");
-        }
 
         return notificationRepository.save(notification);
     }
 
-    // SMS Sending Logic
-    public Notification sendSms(SmsRequestDto smsRequest) {
+    public Notification sendSms(SmsRequestDto request) {
+        System.out.println("Sending SMS to " + request.getPhoneNumber() + ": " + request.getMessage());
+
         Notification notification = Notification.builder()
-                .recipient(smsRequest.getPhoneNumber())
+                .senderEmail(request.getSenderEmail())
+                .recipient(request.getPhoneNumber())
                 .subject("SMS Notification")
-                .message(smsRequest.getMessage())
+                .message(request.getMessage())
                 .type("SMS")
+                .status("SENT")
+                .read(false)
                 .timestamp(LocalDateTime.now())
                 .build();
-
-        try {
-            System.out.println("Sending SMS to " + smsRequest.getPhoneNumber() + ": " + smsRequest.getMessage());
-            notification.setStatus("SENT");
-        } catch (Exception e) {
-            notification.setStatus("FAILED");
-        }
 
         return notificationRepository.save(notification);
     }
 
-    // Get History
     public List<Notification> getAllNotifications() {
         return notificationRepository.findAll();
     }
 
     public List<Notification> getNotificationsByRecipient(String recipient) {
         return notificationRepository.findByRecipient(recipient);
+    }
+
+    public List<Notification> getReceivedInbox(String email) {
+        return notificationRepository.findByRecipientOrderByTimestampDesc(email);
+    }
+
+    public List<Notification> getSentInbox(String email) {
+        return notificationRepository.findBySenderEmailOrderByTimestampDesc(email);
+    }
+
+    public Notification markAsRead(String id) {
+        Optional<Notification> optional = notificationRepository.findById(id);
+        if (optional.isPresent()) {
+            Notification notification = optional.get();
+            notification.setRead(true);
+            return notificationRepository.save(notification);
+        }
+        throw new RuntimeException("Notification not found with id: " + id);
+    }
+
+    public Notification replyToNotification(String id, ReplyRequestDto replyRequest) {
+        Optional<Notification> optional = notificationRepository.findById(id);
+        if (optional.isEmpty()) {
+            throw new RuntimeException("Notification not found with id: " + id);
+        }
+
+        Notification original = optional.get();
+
+        String status = "SENT";
+        try {
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setFrom(replyRequest.getSenderEmail());
+            mail.setTo(original.getSenderEmail());
+            mail.setSubject("Re: " + original.getSubject());
+            mail.setText(replyRequest.getMessage());
+            mailSender.send(mail);
+        } catch (Exception e) {
+            status = "FAILED";
+        }
+
+        Notification reply = Notification.builder()
+                .senderEmail(replyRequest.getSenderEmail())
+                .recipient(original.getSenderEmail())
+                .subject("Re: " + original.getSubject())
+                .message(replyRequest.getMessage())
+                .type("EMAIL")
+                .status(status)
+                .read(false)
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return notificationRepository.save(reply);
+    }
+
+    public void deleteNotification(String id) {
+        if (!notificationRepository.existsById(id)) {
+            throw new RuntimeException("Notification not found with id: " + id);
+        }
+        notificationRepository.deleteById(id);
     }
 }
