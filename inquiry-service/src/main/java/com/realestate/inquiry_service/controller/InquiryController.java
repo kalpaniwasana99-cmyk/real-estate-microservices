@@ -67,7 +67,7 @@ public class InquiryController {
                 if (inquiryDetails.getCustomerName() != null) inquiry.setCustomerName(inquiryDetails.getCustomerName());
                 if (inquiryDetails.getCustomerEmail() != null) inquiry.setCustomerEmail(inquiryDetails.getCustomerEmail());
                 if (inquiryDetails.getPropertyId() != null) inquiry.setPropertyId(inquiryDetails.getPropertyId());
-                
+
                 Inquiry updatedInquiry = inquiryRepository.save(inquiry);
                 return new ResponseEntity<>(updatedInquiry, HttpStatus.OK);
             } else {

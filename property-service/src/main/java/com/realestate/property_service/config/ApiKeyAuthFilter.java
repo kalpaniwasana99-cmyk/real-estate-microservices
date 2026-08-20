@@ -31,12 +31,13 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
         }
     }
 
-    
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.startsWith("/api/properties/uploads/") || 
+        // /api/properties රූට් එක API Key පරීක්ෂාවෙන් නිදහස් කර ඇත
+        return path.startsWith("/api/properties") || 
+               path.startsWith("/api/properties/uploads/") || 
                path.startsWith("/swagger-ui/") ||
-                 path.startsWith("/v3/api-docs");
+               path.startsWith("/v3/api-docs");
     }
 }

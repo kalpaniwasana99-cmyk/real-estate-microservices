@@ -8,7 +8,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
         body { background-color: #060f26; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
-        
+
         nav { width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: #0b1221; border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; }
         .logo { font-size: 24px; font-weight: 700; color: #ffffff; }
         .nav-links { display: flex; gap: 30px; }
@@ -16,7 +16,7 @@
         .nav-links a.active, .nav-links a:hover { color: #ffd700; }
         .logout-nav-btn { padding: 8px 20px; background: transparent; color: #e53e3e; border: 1px solid #e53e3e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .logout-nav-btn:hover { background: #e53e3e; color: white; }
-        
+
         .profile-header-section { background: linear-gradient(135deg, #0b1221, #060f26); padding: 80px 50px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 40px; position: relative; overflow: hidden; }
         .profile-header-section::before { content: ''; position: absolute; left: 50px; top: 0; width: 4px; height: 100%; background-color: #ffd700; }
         .avatar { width: 120px; height: 120px; background: rgba(24, 119, 242, 0.1); border: 2px solid #1877f2; color: #1877f2; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 45px; font-weight: 700; margin-left: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
@@ -24,27 +24,22 @@
         .profile-title h5 { color: #ffd700; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
         .profile-title h1 { font-size: 40px; font-weight: 700; line-height: 1.2; text-transform: uppercase; }
         .profile-title p { color: #a8b2d1; font-size: 16px; margin-top: 5px; }
-        
+
         .profile-content-section { padding: 60px 50px; flex-grow: 1; display: flex; justify-content: center; }
         .form-card { background: #0b1221; width: 100%; max-width: 800px; padding: 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
         .section-title { font-size: 18px; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; border-left: 3px solid #1877f2; padding-left: 15px; }
-        
-        /* Grid Layouts for both View and Edit modes */
+
         .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         .data-group { display: flex; flex-direction: column; }
         .data-group.full-width { grid-column: span 2; }
         .data-group label { margin-bottom: 8px; color: #a8b2d1; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-        
-        /* View Mode Text Styles */
+
         .data-group p { color: #ffffff; font-size: 15px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); word-break: break-all; }
-        
-        /* Edit Mode Input Styles */
         .data-group input { padding: 14px 20px; border: 1px solid #1f2937; border-radius: 8px; font-size: 15px; outline: none; background-color: #111b33; color: white; transition: all 0.3s ease; }
         .data-group input:focus { border-color: #ffd700; box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1); }
-        
+
         .action-buttons { display: flex; justify-content: flex-end; gap: 15px; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); }
-        
-        /* Buttons */
+
         .btn-primary { padding: 14px 30px; background: #1877f2; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
         .btn-primary:hover { background: #145dbf; }
         .btn-secondary { padding: 14px 30px; background: #1f2937; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
@@ -52,7 +47,6 @@
         .btn-danger { padding: 14px 30px; background: rgba(229, 62, 62, 0.1); color: #e53e3e; border: 1px solid #e53e3e; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
         .btn-danger:hover { background: #e53e3e; color: white; }
 
-        /* Modal Styles */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-box { background: #111b33; width: 400px; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); transform: scale(0.8); transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.1); }
@@ -80,13 +74,19 @@
         <div class="logo">DREAM ESTATES</div>
         <div class="nav-links">
             <a href="index.html">Home</a>
-            
             <a href="properties.html">Explore Properties</a>
             <a href="my-properties.html">My Dashboard</a>
             <a href="profile.html" class="active">Profile</a>
-            <a href="notifications.html">Notifications</a>
         </div>
-        <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
+        <div class="nav-right" style="display: flex; align-items: center; gap: 25px;">
+            <a href="notifications.html" style="display:flex; align-items:center; color: #cccccc; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#ffd700'" onmouseout="this.style.color='#cccccc'" title="Notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </a>
+            <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
+        </div>
     </nav>
 
     <div class="profile-header-section">
@@ -102,7 +102,6 @@
         <div class="form-card">
             <div class="section-title">Personal Information</div>
 
-            <!-- VIEW MODE (Displays Data Only) -->
             <div id="viewMode">
                 <div class="data-grid">
                     <div class="data-group">
@@ -131,7 +130,6 @@
                 </div>
             </div>
 
-            <!-- EDIT MODE (Form to Update Data) -->
             <form id="editForm" style="display: none;">
                 <div class="data-grid">
                     <div class="data-group">
@@ -155,18 +153,16 @@
                         <input type="text" id="address" placeholder="123, Main Street, Colombo">
                     </div>
                 </div>
-                
+
                 <div class="action-buttons">
                     <button type="button" class="btn-danger" id="deleteBtn">Delete Account</button>
                     <button type="button" class="btn-secondary" id="cancelEditBtn">Cancel</button>
                     <button type="submit" class="btn-primary">Save Changes</button>
                 </div>
             </form>
-
         </div>
     </div>
 
-    <!-- Custom Popup Modal -->
     <div class="modal-overlay" id="customModal">
         <div class="modal-box">
             <div class="modal-icon" id="modalIcon">✓</div>
@@ -177,10 +173,9 @@
     </div>
 
     <script>
-        // Toggle Between View and Edit Modes
         const viewMode = document.getElementById('viewMode');
         const editForm = document.getElementById('editForm');
-        
+
         document.getElementById('openEditBtn').addEventListener('click', () => {
             viewMode.style.display = 'none';
             editForm.style.display = 'block';
@@ -191,22 +186,21 @@
             viewMode.style.display = 'block';
         });
 
-        // Popup Logic
         function showPopup(type, title, message, onOk, showCancel = false) {
             const modal = document.getElementById('customModal');
             const icon = document.getElementById('modalIcon');
             const btnGroup = document.getElementById('modalBtnGroup');
-            
+
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalMessage').innerText = message;
-            
+
             icon.className = 'modal-icon ' + type;
             if (type === 'success') icon.innerText = '✓';
             else if (type === 'error') icon.innerText = '✕';
             else if (type === 'warning') icon.innerText = '!';
 
             btnGroup.innerHTML = ''; 
-            
+
             if (showCancel) {
                 const cancelBtn = document.createElement('button');
                 cancelBtn.className = 'modal-btn cancel-btn';
@@ -227,11 +221,10 @@
             modal.classList.add('active');
         }
 
-        // Fetch Data on Load
         window.addEventListener('DOMContentLoaded', async () => {
             const userId = localStorage.getItem('userId');
             const token = localStorage.getItem('authToken');
-            
+
             if (!userId || userId === 'null' || userId === 'undefined') {
                 window.location.href = 'index.html';
                 return;
@@ -242,25 +235,22 @@
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 if (response.ok) {
                     const user = await response.json();
-                    
-                    // Set Data in View Mode
+
                     document.getElementById('viewFirstName').innerText = user.firstName || '-';
                     document.getElementById('viewLastName').innerText = user.lastName || '-';
                     document.getElementById('viewEmail').innerText = user.email || '-';
                     document.getElementById('viewPhone').innerText = user.phone || 'Not Provided';
                     document.getElementById('viewAddress').innerText = user.address || 'Not Provided';
 
-                    // Set Data in Edit Form
                     document.getElementById('firstName').value = user.firstName || '';
                     document.getElementById('lastName').value = user.lastName || '';
                     document.getElementById('email').value = user.email || '';
                     document.getElementById('phone').value = user.phone || '';      
                     document.getElementById('address').value = user.address || '';   
-                    
-                    // Set Header Info
+
                     const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
                     document.getElementById('headerName').innerText = fullName || 'USER ACCOUNT';
                     document.getElementById('headerEmail').innerText = user.email || '';
@@ -273,7 +263,6 @@
             }
         });
 
-        // Update Data Form Submit
         document.getElementById('editForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const userId = localStorage.getItem('userId');
@@ -296,19 +285,16 @@
 
                 if (response.ok) {
                     showPopup('success', 'Success!', 'Profile updated successfully!', () => {
-                        // Update Header
                         document.getElementById('headerName').innerText = `${updatedData.firstName} ${updatedData.lastName}`.toUpperCase();
                         document.getElementById('headerEmail').innerText = updatedData.email;
                         if(updatedData.firstName) document.getElementById('userAvatar').innerText = updatedData.firstName.charAt(0).toUpperCase();
-                        
-                        // Update View Mode Data
+
                         document.getElementById('viewFirstName').innerText = updatedData.firstName;
                         document.getElementById('viewLastName').innerText = updatedData.lastName;
                         document.getElementById('viewEmail').innerText = updatedData.email;
                         document.getElementById('viewPhone').innerText = updatedData.phone || 'Not Provided';
                         document.getElementById('viewAddress').innerText = updatedData.address || 'Not Provided';
 
-                        // Switch back to view mode
                         editForm.style.display = 'none';
                         viewMode.style.display = 'block';
                     });
@@ -320,7 +306,6 @@
             }
         });
 
-        // Delete Account
         document.getElementById('deleteBtn').addEventListener('click', () => {
             showPopup('warning', 'Are you sure?', 'Do you really want to delete your account? This action cannot be undone.', async () => {
                 const userId = localStorage.getItem('userId');
@@ -346,7 +331,6 @@
             }, true);
         });
 
-        // Logout
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.clear();
             window.location.href = 'index.html';

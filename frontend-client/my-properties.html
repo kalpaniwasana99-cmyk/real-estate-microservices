@@ -10,7 +10,7 @@
         body { background-color: #060f26; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
         nav { width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: #0b1221; border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; }
         .logo { font-size: 24px; font-weight: 700; color: #ffffff; }
-        .nav-links { display: flex; gap: 30px; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
         .nav-links a { color: #cccccc; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
         .nav-links a.active, .nav-links a:hover { color: #ffd700; }
         .logout-nav-btn { padding: 8px 20px; background: transparent; color: #e53e3e; border: 1px solid #e53e3e; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
@@ -62,8 +62,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Dashboard navigation bar -->
     <nav>
         <div class="logo">DREAM ESTATES</div>
         <div class="nav-links">
@@ -71,16 +69,21 @@
             <a href="properties.html">Explore Properties</a>
             <a href="my-properties.html" class="active">My Dashboard</a>
             <a href="profile.html">Profile</a>
-            <a href="notifications.html">Notifications</a>
         </div>
-        <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
+        <div class="nav-right" style="display: flex; align-items: center; gap: 25px;">
+            <a href="notifications.html" style="display:flex; align-items:center; color: #cccccc; text-decoration: none; transition: color 0.3s;" title="Notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </a>
+            <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
+        </div>
     </nav>
 
-    <!-- Main Dashboard Container -->
     <div class="container">
         <div class="top-action-bar">
             <h2>My Dashboard</h2>
-            <!-- Add New Property Trigger Button -->
             <button class="add-property-toggle-btn" id="openAddModalBtn">+ Add New Property</button>
         </div>
 
@@ -92,7 +95,6 @@
         </div>
     </div>
 
-    <!-- ADD/EDIT PROPERTY MODAL -->
     <div class="form-modal-overlay" id="addPropertyModal">
         <div class="form-modal-box">
             <button class="close-modal-btn" id="closeAddModalBtn">&times;</button>
@@ -123,7 +125,6 @@
                     <label>Contact Phone Number</label>
                     <input type="text" id="contactPhone" placeholder="+94 71 234 5678">
                 </div>
-                
                 <div class="input-group">
                     <label>Property Image</label>
                     <input type="file" id="image" accept="image/*">
@@ -133,7 +134,6 @@
         </div>
     </div>
 
-    <!-- ALERT MODAL -->
     <div class="modal-overlay" id="customModal">
         <div class="modal-box">
             <div class="modal-icon" id="modalIcon">✓</div>
@@ -143,7 +143,6 @@
         </div>
     </div>
 
-    <!-- DELETE CONFIRMATION MODAL -->
     <div class="modal-overlay" id="confirmModal">
         <div class="modal-box">
             <div class="modal-icon error" id="confirmModalIcon">?</div>
@@ -157,9 +156,10 @@
     </div>
 
     <script>
-        // Modal toggling variables and triggers
         const addModal = document.getElementById('addPropertyModal');
-        
+        // Property Service එක run වන නිවැරදි Port එක (8082) මෙහි යොදා ඇත
+        const API_BASE_URL = 'http://localhost:8082/api/properties';
+
         document.getElementById('openAddModalBtn').addEventListener('click', () => {
             document.getElementById('propertyForm').reset();
             document.getElementById('propertyId').value = '';
@@ -172,62 +172,53 @@
             addModal.classList.remove('active');
         });
 
-        // Function to show custom alert modals
         function showPopup(type, title, message, callback) {
             const modal = document.getElementById('customModal');
             const icon = document.getElementById('modalIcon');
-            
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalMessage').innerText = message;
-            
             icon.className = 'modal-icon ' + type;
             icon.innerText = type === 'success' ? '✓' : '✕';
-            
             modal.classList.add('active');
-
             const okBtn = document.getElementById('modalOkBtn');
             const newOkBtn = okBtn.cloneNode(true);
             okBtn.parentNode.replaceChild(newOkBtn, okBtn);
-
             newOkBtn.addEventListener('click', () => {
                 modal.classList.remove('active');
                 if (callback) callback();
             });
         }
 
-        // Authenticate and fetch properties created by user on DOM load
         window.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('authToken');
-            if (!token) {
-                window.location.href = 'index.html';
-                return;
-            }
             fetchMyProperties();
         });
-        
-        // Fetch properties from API and filter by current owner's ID
-        async function fetchMyProperties() {
-            const token = localStorage.getItem('authToken');
-            const userId = localStorage.getItem('userId');
-            const grid = document.getElementById('propertyGrid');
 
+        async function fetchMyProperties() {
+            const grid = document.getElementById('propertyGrid');
             try {
-                const response = await fetch('http://localhost:8080/api/properties', {
-                    method: 'GET',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                const response = await fetch(API_BASE_URL, {
+                    method: 'GET'
                 });
 
                 if (response.ok) {
-                    const properties = await response.json();
-                    const myProperties = properties.filter(p => p.ownerId === userId);
+                    const data = await response.json();
+                    
+                    let properties = [];
+                    if (Array.isArray(data)) {
+                        properties = data;
+                    } else if (data && Array.isArray(data.content)) {
+                        properties = data.content;
+                    } else if (data) {
+                        properties = [data];
+                    }
 
-                    if (myProperties.length === 0) {
+                    if (properties.length === 0) {
                         grid.innerHTML = '<p style="color: #a8b2d1; text-align: center; margin-top: 40px;">You have not published any properties yet.</p>';
                         return;
                     }
 
                     let html = '';
-                    myProperties.forEach(p => {
+                    properties.forEach(p => {
                         let contactHtml = '';
                         if (p.contactEmail || p.contactPhone) {
                             contactHtml = `<div class="property-contacts">`;
@@ -236,23 +227,23 @@
                             contactHtml += `</div>`;
                         }
 
-                        // Load property image if available
                         let imageHtml = p.imageUrl 
-                            ? `<img src="http://localhost:8080/api/properties/uploads/${p.imageUrl}" class="property-img" alt="${p.title}">` 
-                            : `<div class="property-img" style="display:flex;align-items:center;justify-content:center;color:#a8b2d1;">No Image</div>`;
+                            ? `http://localhost:8082/api/properties/uploads/${p.imageUrl}` 
+                            : '';
 
                         const propId = p.id || p._id;
+                        const priceVal = p.price ? p.price.toLocaleString() : '0';
 
                         html += `
                             <div class="property-item">
-                                ${imageHtml}
-                                <h4>${p.title}</h4>
-                                <p>${p.description}</p>
-                                <p>📍 <strong>Location:</strong> ${p.location}</p>
-                                <div class="property-price">$${p.price.toLocaleString()}</div>
+                                ${imageHtml ? `<img src="${imageHtml}" class="property-img" alt="${p.title}">` : `<div class="property-img" style="display:flex;align-items:center;justify-content:center;color:#a8b2d1;">No Image</div>`}
+                                <h4>${p.title || 'Untitled'}</h4>
+                                <p>${p.description || ''}</p>
+                                <p>📍 <strong>Location:</strong> ${p.location || 'N/A'}</p>
+                                <div class="property-price">$${priceVal}</div>
                                 ${contactHtml}
                                 <div class="property-actions">
-                                    <button class="edit-btn" onclick="openEditModal('${propId}', '${escapeHtml(p.title)}', '${escapeHtml(p.description)}', ${p.price}, '${escapeHtml(p.location)}', '${p.contactEmail || ''}', '${p.contactPhone || ''}')">Edit</button>
+                                    <button class="edit-btn" onclick="openEditModal('${propId}', '${escapeHtml(p.title)}', '${escapeHtml(p.description)}', ${p.price || 0}, '${escapeHtml(p.location)}', '${p.contactEmail || ''}', '${p.contactPhone || ''}')">Edit</button>
                                     <button class="delete-btn" onclick="deleteProperty('${propId}')">Delete</button>
                                 </div>
                             </div>
@@ -267,13 +258,11 @@
             }
         }
 
-        // Helper function to escape text data for HTML injection safely
         function escapeHtml(text) {
             if (!text) return '';
             return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
         }
-        
-        // Open edit form prefilled with property data
+
         window.openEditModal = function(id, title, description, price, location, email, phone) {
             document.getElementById('propertyId').value = id;
             document.getElementById('title').value = title;
@@ -283,19 +272,14 @@
             document.getElementById('contactEmail').value = email !== 'undefined' ? email : '';
             document.getElementById('contactPhone').value = phone !== 'undefined' ? phone : '';
             document.getElementById('image').value = '';
-            
             document.getElementById('modalFormTitle').innerText = 'Edit Property';
             document.getElementById('formSubmitBtn').innerText = 'Update Property';
             addModal.classList.add('active');
         }
-        
-        // Submit property form data via multi-part form data
+
         document.getElementById('propertyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const token = localStorage.getItem('authToken');
-            const userId = localStorage.getItem('userId') || 'user123';
             const propertyId = document.getElementById('propertyId').value;
-
             const formData = new FormData();
             formData.append('title', document.getElementById('title').value);
             formData.append('description', document.getElementById('description').value);
@@ -303,7 +287,7 @@
             formData.append('location', document.getElementById('location').value);
             formData.append('contactEmail', document.getElementById('contactEmail').value);
             formData.append('contactPhone', document.getElementById('contactPhone').value);
-            formData.append('ownerId', userId);
+            formData.append('ownerId', localStorage.getItem('userId') || 'user123');
 
             const imageFile = document.getElementById('image').files[0];
             if (imageFile) {
@@ -311,16 +295,13 @@
             }
 
             const isEdit = propertyId && propertyId !== '';
-            const url = isEdit ? `http://localhost:8080/api/properties/${propertyId}` : 'http://localhost:8080/api/properties';
+            const url = isEdit ? `${API_BASE_URL}/${propertyId}` : API_BASE_URL;
             const method = isEdit ? 'PUT' : 'POST';
 
             try {
                 const response = await fetch(url, {
                     method: method,
-                    headers: { 
-                        'Authorization': `Bearer ${token}` 
-                    },
-                    body: formData 
+                    body: formData
                 });
 
                 if (response.ok) {
@@ -338,30 +319,23 @@
                 showPopup('error', 'Connection Error', 'Could not connect to server.');
             }
         });
-        
-        // Confirmation modal handling for property deletion
+
         window.deleteProperty = function(id) {
             const confirmModal = document.getElementById('confirmModal');
             confirmModal.classList.add('active');
-
             const okBtn = document.getElementById('confirmOkBtn');
             const cancelBtn = document.getElementById('confirmCancelBtn');
-
             const newOkBtn = okBtn.cloneNode(true);
             okBtn.parentNode.replaceChild(newOkBtn, okBtn);
-
             const newCancelBtn = cancelBtn.cloneNode(true);
             cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
 
             newOkBtn.addEventListener('click', async () => {
                 confirmModal.classList.remove('active');
-                const token = localStorage.getItem('authToken');
                 try {
-                    const response = await fetch(`http://localhost:8080/api/properties/${id}`, {
-                        method: 'DELETE',
-                        headers: { 'Authorization': `Bearer ${token}` }
+                    const response = await fetch(`${API_BASE_URL}/${id}`, {
+                        method: 'DELETE'
                     });
-
                     if (response.ok) {
                         showPopup('success', 'Deleted!', 'Property deleted successfully.', () => {
                             fetchMyProperties();
@@ -379,7 +353,6 @@
             });
         }
 
-        // Handle logout actions
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.clear();
             window.location.href = 'index.html';
