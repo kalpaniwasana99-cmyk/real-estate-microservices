@@ -46,7 +46,6 @@
         .detail-view.active { display: block; }
         .back-link { color: #1877f2; cursor: pointer; font-size: 13px; margin-bottom: 15px; display: inline-block; }
 
-        /* Back Button */
         .back-btn { background: transparent; color: #a8b2d1; border: 1px solid #a8b2d1; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: 0.3s; text-decoration: none; }
         .back-btn:hover { background: #a8b2d1; color: #060f26; }
 
@@ -73,7 +72,6 @@
         .close-modal { position: absolute; top: 20px; right: 25px; font-size: 24px; cursor: pointer; color: #a8b2d1; }
         .close-modal:hover { color: #fff; }
 
-        /* Custom Popup Modal styling */
         .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .custom-modal-overlay.active { opacity: 1; visibility: visible; }
         .custom-modal-box { background: #111b33; width: 400px; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); transform: scale(0.8); transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.1); }
@@ -89,6 +87,7 @@
     </style>
 </head>
 <body>
+    <!-- Top navigation bar -->
     <nav>
         <div class="logo">DREAM ESTATES</div>
         <div class="nav-links">
@@ -148,7 +147,7 @@
             </div>
         </div>
 
-        <!-- Action Button for Popup -->
+        <!-- Action Button for Popups -->
         <div class="bottom-action-bar">
             <button class="compose-btn" onclick="openSendModal()">
                 <span>+</span> Send Mails / SMS
@@ -156,7 +155,7 @@
         </div>
     </div>
 
-    <!-- POPUP MODAL CONTAINER -->
+    <!-- POPUP MODAL CONTAINER FOR SENDING MESSAGES -->
     <div class="modal-overlay" id="sendModal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeSendModal()">&times;</span>
@@ -186,7 +185,7 @@
         </div>
     </div>
 
-    <!-- CUSTOM CONFIRMATION MODAL FOR DELETE -->
+    <!-- CUSTOM CONFIRMATION MODAL FOR DELETION -->
     <div class="custom-modal-overlay" id="customConfirmModal">
         <div class="custom-modal-box">
             <div class="custom-modal-icon">?</div>
@@ -200,7 +199,8 @@
     </div>
 
     <script>
-        const API_BASE = 'http://localhost:8084/api/notify';
+        // Notification API endpoints configuration
+        const API_BASE = 'http://localhost:8080/api/notify';
         const API_KEY = 'notify-service-secret-key-123';
         
         const urlParams = new URLSearchParams(window.location.search);
@@ -239,6 +239,7 @@
             document.getElementById('smsStatus').className = 'status-msg';
         }
 
+        // Load inbox notifications from notification service API
         async function loadInbox() {
             const list = document.getElementById('msgList');
             list.innerHTML = '<p style="color:#a8b2d1;text-align:center;padding:20px;">Loading...</p>';
@@ -375,7 +376,7 @@
             }
         }
 
-        // Custom Confirm Modal Popup implementation replacing browser's confirm()
+        // Custom modal confirmation for message deletion
         function deleteMessage(id) {
             const modal = document.getElementById('customConfirmModal');
             const okBtn = document.getElementById('customConfirmOkBtn');
@@ -383,7 +384,6 @@
 
             modal.classList.add('active');
 
-            // Clear previous event listeners by cloning
             const newOkBtn = okBtn.cloneNode(true);
             const newCancelBtn = cancelBtn.cloneNode(true);
             okBtn.parentNode.replaceChild(newOkBtn, okBtn);
@@ -408,6 +408,7 @@
             };
         }
 
+        // Send Email form submit handler (Fixed with proper res.ok checking)
         document.getElementById('emailForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const statusEl = document.getElementById('emailStatus');
@@ -423,6 +424,7 @@
                     headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
                     body: JSON.stringify(body)
                 });
+                
                 if (res.ok) {
                     statusEl.textContent = 'Email sent!';
                     statusEl.className = 'status-msg success';
@@ -432,13 +434,16 @@
                         closeSendModal();
                         loadInbox();
                     }, 1200);
-                } else throw new Error();
-            } catch {
+                } else {
+                    throw new Error('Server error response');
+                }
+            } catch (err) {
                 statusEl.textContent = 'Failed to send email.';
                 statusEl.className = 'status-msg error';
             }
         });
 
+        // Send SMS form submit handler
         document.getElementById('smsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const statusEl = document.getElementById('smsStatus');
@@ -453,6 +458,7 @@
                     headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY },
                     body: JSON.stringify(body)
                 });
+                
                 if (res.ok) {
                     statusEl.textContent = 'SMS sent!';
                     statusEl.className = 'status-msg success';
@@ -462,8 +468,10 @@
                         closeSendModal();
                         loadInbox();
                     }, 1200);
-                } else throw new Error();
-            } catch {
+                } else {
+                    throw new Error('Server error response');
+                }
+            } catch (err) {
                 statusEl.textContent = 'Failed to send SMS.';
                 statusEl.className = 'status-msg error';
             }

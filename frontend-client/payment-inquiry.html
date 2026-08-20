@@ -74,6 +74,7 @@
     </style>
 </head>
 <body>
+    <!-- Navigation bar -->
     <nav>
         <div class="logo">DREAM ESTATES</div>
         <div class="nav-links">
@@ -197,13 +198,13 @@
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <button class="history-btn" onclick="openPaymentHistory()">
-                🕒 View Payment History & Receipts
+                🕒 View Payment History & Records
             </button>
             <a href="notifications.html" style="color: #ffd700; font-size: 13px; text-decoration: none;">View All Notifications &rarr;</a>
         </div>
     </div>
 
-    <!-- MODALS -->
+    <!-- MODALS AND HISTORY VIEW PANELS -->
     <div class="history-modal-overlay" id="inquiryHistoryModal">
         <div class="history-modal-box">
             <button class="close-modal-btn" onclick="closeInquiryHistory()">✖</button>
@@ -266,12 +267,15 @@
     </div>
 
     <script>
-        const INQUIRY_API_URL = 'http://localhost:8085/api/inquiries';
-        const PAYMENT_API_URL = 'http://localhost:8083/api/payments';
-        const NOTIFICATION_API_URL = 'http://localhost:8084/api/notify/email'; 
+        // API Base configurations
+        const INQUIRY_API_URL = 'http://localhost:8080/api/inquiries';
+        const PAYMENT_API_URL = 'http://localhost:8080/api/payments';
+        const NOTIFICATION_API_URL = 'http://localhost:8080/api/notify/email'; 
+        
         const apiKey = 'my-super-secret-payment-api-key';
         const notifyApiKey = 'notify-service-secret-key-123';
 
+        // Extract Property ID from query parameters or provide default fallback
         const urlParams = new URLSearchParams(window.location.search);
         const propIdFromUrl = urlParams.get('propertyId') || 'PROP-DEFAULT';
         
@@ -289,6 +293,7 @@
             loadPayments();
         });
 
+        // Toggle views between inquiry and payment sections
         function showPaymentPage() {
             document.getElementById('inquiryPageView').style.display = 'none';
             document.getElementById('paymentPageView').style.display = 'flex';
@@ -314,6 +319,7 @@
             document.getElementById('paymentHistoryModal').classList.remove('active');
         }
 
+        // Custom alert and confirmation popup handler
         function showPopup(type, title, message, onOkCallback) {
             const modal = document.getElementById('customModal');
             const icon = document.getElementById('modalIcon');
@@ -346,6 +352,7 @@
             modal.classList.add('active');
         }
 
+        // Load inquiries data from backend service
         async function loadInquiries() {
             const tbody = document.getElementById('inquiriesTableBody');
             try {
@@ -384,7 +391,7 @@
             }
         }
 
-        // Inquiry Form Submit - Fast & Non-blocking Background Notification
+        // Inquiry Form Submission with integrated background notification mail trigger
         document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('inquiryId').value;
@@ -400,7 +407,6 @@
             const url = id ? `${INQUIRY_API_URL}/${id}` : INQUIRY_API_URL;
 
             try {
-                // 1. Save Inquiry instantly without waiting for mail server response
                 const response = await fetch(url, {
                     method: method,
                     headers: { 'Content-Type': 'application/json' },
@@ -408,7 +414,7 @@
                 });
 
                 if (response.ok) {
-                    // 2. Trigger background notification to owner and save to user's received inbox
+                    // Send notification email to owner inbox correctly matching backend requirements
                     fetch(NOTIFICATION_API_URL, {
                         method: 'POST',
                         headers: { 
@@ -473,6 +479,7 @@
             });
         };
 
+        // Load payment records history
         async function loadPayments() {
             const tbody = document.getElementById('paymentsTableBody');
             try {
@@ -514,7 +521,7 @@
             }
         }
 
-        // Payment Form Submit - Fast & Non-blocking Background Receipt Notification
+        // Payment Form Submit with automated background email receipt dispatch
         document.getElementById('paymentForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const propertyId = document.getElementById('propertyId').value;
@@ -533,7 +540,7 @@
                 });
 
                 if (response.ok) {
-                    // Send receipt notification to user's received inbox instantly in background
+                    // Send payment receipt notification email securely to the customer inbox
                     fetch(NOTIFICATION_API_URL, {
                         method: 'POST',
                         headers: { 
@@ -555,7 +562,6 @@
                         document.getElementById('expiryDate').value = '';
                         document.getElementById('cvv').value = '';
                         loadPayments();
-                        
                         showInquiryPage();
                     });
                 } else {

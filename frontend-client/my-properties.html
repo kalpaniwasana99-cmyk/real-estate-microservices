@@ -63,6 +63,7 @@
 </head>
 <body>
 
+    <!-- Dashboard navigation bar -->
     <nav>
         <div class="logo">DREAM ESTATES</div>
         <div class="nav-links">
@@ -75,9 +76,11 @@
         <button class="logout-nav-btn" id="logoutBtn">SIGN OUT</button>
     </nav>
 
+    <!-- Main Dashboard Container -->
     <div class="container">
         <div class="top-action-bar">
             <h2>My Dashboard</h2>
+            <!-- Add New Property Trigger Button -->
             <button class="add-property-toggle-btn" id="openAddModalBtn">+ Add New Property</button>
         </div>
 
@@ -89,6 +92,7 @@
         </div>
     </div>
 
+    <!-- ADD/EDIT PROPERTY MODAL -->
     <div class="form-modal-overlay" id="addPropertyModal">
         <div class="form-modal-box">
             <button class="close-modal-btn" id="closeAddModalBtn">&times;</button>
@@ -129,6 +133,7 @@
         </div>
     </div>
 
+    <!-- ALERT MODAL -->
     <div class="modal-overlay" id="customModal">
         <div class="modal-box">
             <div class="modal-icon" id="modalIcon">✓</div>
@@ -138,6 +143,7 @@
         </div>
     </div>
 
+    <!-- DELETE CONFIRMATION MODAL -->
     <div class="modal-overlay" id="confirmModal">
         <div class="modal-box">
             <div class="modal-icon error" id="confirmModalIcon">?</div>
@@ -151,6 +157,7 @@
     </div>
 
     <script>
+        // Modal toggling variables and triggers
         const addModal = document.getElementById('addPropertyModal');
         
         document.getElementById('openAddModalBtn').addEventListener('click', () => {
@@ -165,6 +172,7 @@
             addModal.classList.remove('active');
         });
 
+        // Function to show custom alert modals
         function showPopup(type, title, message, callback) {
             const modal = document.getElementById('customModal');
             const icon = document.getElementById('modalIcon');
@@ -187,6 +195,7 @@
             });
         }
 
+        // Authenticate and fetch properties created by user on DOM load
         window.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('authToken');
             if (!token) {
@@ -196,6 +205,7 @@
             fetchMyProperties();
         });
         
+        // Fetch properties from API and filter by current owner's ID
         async function fetchMyProperties() {
             const token = localStorage.getItem('authToken');
             const userId = localStorage.getItem('userId');
@@ -226,7 +236,7 @@
                             contactHtml += `</div>`;
                         }
 
-                        // පින්තූරය load කරන කොටස
+                        // Load property image if available
                         let imageHtml = p.imageUrl 
                             ? `<img src="http://localhost:8080/api/properties/uploads/${p.imageUrl}" class="property-img" alt="${p.title}">` 
                             : `<div class="property-img" style="display:flex;align-items:center;justify-content:center;color:#a8b2d1;">No Image</div>`;
@@ -257,11 +267,13 @@
             }
         }
 
+        // Helper function to escape text data for HTML injection safely
         function escapeHtml(text) {
             if (!text) return '';
             return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
         }
         
+        // Open edit form prefilled with property data
         window.openEditModal = function(id, title, description, price, location, email, phone) {
             document.getElementById('propertyId').value = id;
             document.getElementById('title').value = title;
@@ -270,14 +282,14 @@
             document.getElementById('location').value = location;
             document.getElementById('contactEmail').value = email !== 'undefined' ? email : '';
             document.getElementById('contactPhone').value = phone !== 'undefined' ? phone : '';
-            document.getElementById('image').value = ''; // Edit කරද්දි පරණ පින්තූරය තියාගෙන අලුතින් upload කරන්න ඕන නම් විතරක් දාන්න ඉඩ දෙනවා
+            document.getElementById('image').value = '';
             
             document.getElementById('modalFormTitle').innerText = 'Edit Property';
             document.getElementById('formSubmitBtn').innerText = 'Update Property';
             addModal.classList.add('active');
         }
         
-        // FormData පාවිච්චි කරලා submit කරන කොටස
+        // Submit property form data via multi-part form data
         document.getElementById('propertyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const token = localStorage.getItem('authToken');
@@ -307,9 +319,8 @@
                     method: method,
                     headers: { 
                         'Authorization': `Bearer ${token}` 
-                        // මෙතනින් 'Content-Type': 'application/json' අයින් කරලා තියෙන්නේ
                     },
-                    body: formData // JSON වෙනුවට formData යවනවා
+                    body: formData 
                 });
 
                 if (response.ok) {
@@ -328,6 +339,7 @@
             }
         });
         
+        // Confirmation modal handling for property deletion
         window.deleteProperty = function(id) {
             const confirmModal = document.getElementById('confirmModal');
             confirmModal.classList.add('active');
@@ -367,6 +379,7 @@
             });
         }
 
+        // Handle logout actions
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.clear();
             window.location.href = 'index.html';

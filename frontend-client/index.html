@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dream Estates - Login</title>
+    <!-- Google Fonts stylesheet link -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-        body { background-color: #0b1221; color: #ffffff; overflow: hidden; /* Prevent scrolling since everything is in the hero or popup */ }
+        body { background-color: #0b1221; color: #ffffff; overflow: hidden; }
         
         nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(11, 18, 33, 0.9); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .logo { font-size: 24px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 10px; }
@@ -76,6 +77,7 @@
     </style>
 </head>
 <body>
+    <!-- Navigation bar element -->
     <nav>
         <div class="logo">DREAM ESTATES</div>
         <div class="nav-links">
@@ -85,31 +87,32 @@
             <a href="profile.html">Profile</a>
         </div>
         
-        <!-- Right side containing Envelope Icon and Button -->
         <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
+            <!-- Notifications navigation link with envelope icon -->
             <a href="notifications.html" style="display:flex; align-items:center; color: #ffd700; text-decoration: none;" title="Notifications">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
             </a>
-            <!-- Trigger Button -->
+            <!-- Trigger Button to open login portal modal -->
             <button id="openLoginBtnNav" class="btn-nav">LOGIN TO PORTAL</button>
         </div>
     </nav>
 
+    <!-- Hero section banner content -->
     <section class="hero">
         <h1>Find Your Dream Property</h1>
         <p>Experience luxury living with our exclusive collection of estates tailored for your lifestyle. Join our portal to explore more.</p>
         
-        <!-- Second Trigger Button -->
+        <!-- Second Trigger Button for Login modal -->
         <button id="openLoginBtnHero" class="scroll-down">
             Explore More
             <span>˅</span>
         </button>
     </section>
 
-    <!-- THE LOGIN POPUP MODAL -->
+    <!-- THE LOGIN POPUP MODAL CONTAINER -->
     <div class="login-modal-overlay" id="mainLoginModal">
         <div class="login-container">
             <button class="close-login-btn" id="closeLoginBtn">&times;</button>
@@ -117,6 +120,7 @@
             <div class="login-form-area">
                 <h2>Welcome Back</h2>
                 <p>Sign in to access your exclusive real estate dashboard.</p>
+                <!-- User Login Form -->
                 <form id="loginForm">
                     <div class="input-group">
                         <label for="email">Email Address</label>
@@ -144,32 +148,35 @@
     </div>
 
     <script>
-        // Logic to Open & Close Login Modal
+        // Select elements for login modal interactions
         const mainLoginModal = document.getElementById('mainLoginModal');
         const openLoginBtnNav = document.getElementById('openLoginBtnNav');
         const openLoginBtnHero = document.getElementById('openLoginBtnHero');
         const closeLoginBtn = document.getElementById('closeLoginBtn');
 
+        // Function to activate and show the login modal
         function openLoginModal() {
             mainLoginModal.classList.add('active');
         }
 
+        // Function to hide the login modal
         function closeLoginModal() {
             mainLoginModal.classList.remove('active');
         }
 
+        // Event listeners to handle modal open and close actions
         openLoginBtnNav.addEventListener('click', openLoginModal);
         openLoginBtnHero.addEventListener('click', openLoginModal);
         closeLoginBtn.addEventListener('click', closeLoginModal);
 
-        // Close modal when clicking outside the box
+        // Close login modal when clicking on the overlay background outside the container
         mainLoginModal.addEventListener('click', (e) => {
             if (e.target === mainLoginModal) {
                 closeLoginModal();
             }
         });
 
-        // General Alert Popup Function
+        // Function to display custom alert messages
         function showPopup(type, title, message, callback) {
             const modal = document.getElementById('customModal');
             const icon = document.getElementById('modalIcon');
@@ -192,7 +199,7 @@
             });
         }
 
-        // Handle Login Submission
+        // Handle user login form submission via API gateway
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
             event.preventDefault(); 
             const email = document.getElementById('email').value;
@@ -210,10 +217,15 @@
                     localStorage.clear();
                     if(data.token) localStorage.setItem('authToken', data.token);
                     
+                    // Extract user ID safely from response data structures
                     const currentUserId = (data.user && data.user.id) ? data.user.id : (data.user && data.user._id) ? data.user._id : null;
                     if(currentUserId) localStorage.setItem('userId', currentUserId);
                     
-                    closeLoginModal(); // Hide login form before showing success popup
+                    // Save profile details to localStorage for messaging/notifications usability
+                    if(data.user && data.user.email) localStorage.setItem('userEmail', data.user.email);
+                    if(data.user && data.user.firstName) localStorage.setItem('userName', data.user.firstName);
+                    
+                    closeLoginModal();
 
                     showPopup('success', 'Success!', 'Login Successful! Welcome to Dream Estates.', () => {
                         window.location.href = 'profile.html';

@@ -1,5 +1,5 @@
 server:
-  port: 8085 # වෙනත් සේවාවන් සමග ගැටෙන්නේ නැති port එකක්
+  port: 8085 
 
 spring:
   application:

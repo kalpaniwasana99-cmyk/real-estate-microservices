@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dream Estates - Sign Up</title>
+    <!-- Google Fonts link -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
@@ -52,23 +53,26 @@
     </style>
 </head>
 <body>
+    <!-- Top navigation section -->
     <nav>
         <div class="logo">DREAM ESTATES</div>
         <div class="nav-links">
             <a href="index.html">Home</a>
-            
             <a href="properties.html">Properties</a>
             <a href="my-properties.html">My Dashboard</a>
             <a href="profile.html">Profile</a>
         </div>
         <a href="index.html" class="btn-nav">LOGIN</a>
     </nav>
+    
+    <!-- Registration section container -->
     <section class="register-section">
         <div class="register-container">
             <div class="register-image"></div>
             <div class="register-form-area">
                 <h2>Create Account</h2>
                 <p>Join Dream Estates today and find your perfect property.</p>
+                <!-- User Signup Form -->
                 <form id="registerForm">
                     <div class="form-row">
                         <div class="input-group">
@@ -95,6 +99,7 @@
         </div>
     </section>
 
+    <!-- Modal Popup Alert -->
     <div class="modal-overlay" id="customModal">
         <div class="modal-box">
             <div class="modal-icon" id="modalIcon">✓</div>
@@ -105,6 +110,7 @@
     </div>
 
     <script>
+        // Function to display popup alerts
         function showPopup(type, title, message, callback) {
             const modal = document.getElementById('customModal');
             const icon = document.getElementById('modalIcon');
@@ -127,6 +133,7 @@
             });
         }
 
+        // Handle user registration submission via backend API endpoint
         document.getElementById('registerForm').addEventListener('submit', async function(event) {
             event.preventDefault(); 
             const userData = {
